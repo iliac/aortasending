@@ -1,0 +1,82 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# AORTA Rest
+
+Aorta Rest is a simple API allowing tasks to be routed and medical messages to be transferred.
+
+## Questions Collection [/questions]
+
+
+### Create a New Question [POST]
+
+You may create your own question using this action. It takes a JSON
+object containing a question and a collection of answers in the
+form of choices.
+
++ Request (application/json)
+
+        { "AortaOutMB":
+            {
+                "AortaOut_Message_ID":"285e708f-a418-4f2a-8df9-eab236d653eb",
+                "AortaOut_Sent_TS":"20160223.122231.780",
+                "AortaRouting":
+                {
+                    "AortaOut_Ready_TS":"20160223.122231.560",
+                    "AortaRoutingVersion":"1.0.0.1",
+                    "AortaRoutingInfo": {}
+                },
+                "AortaIn_Received_TS":"20160223.122231.340",
+                "AortaIn_Message_ID":"cd2587f7-72ec-48a8-9c43-b1ebd32d6ce9",
+                "AortaIn_Created_TS":"20160223.122231.120",
+                "AortaIn_MessageVersion":"1.0.0.1",
+                "AortaIn_MessageType":"HL7_PUSH",
+                "AortaIn_MessageDetail":"ADT^A14",
+                "AortaIn_MessageParams": {},
+                "SourceApplication":"OAZIS",
+                "SourceModule":"PatAdmin",
+                "SourceInstance":"Hostname12345",
+                "TargetApplication":"",
+                "TargetModule":"",
+                "TargetParams": {}
+            },
+            "HL7_PUSH":
+            {
+                "Message_ID": "a8e2a4e0-5519-4acd-bd4c-6567e74f406a",
+                "MessageType": "OAZIS_HL7_ADT",
+                "MessageDetail": "PendingAdmit",
+                "HL7_MSH": {
+                    "HL7_SendingApplication": "OAZIS",
+                    "HL7_MessageType": "ADT^A14",
+                    "HL7_ControlID": "00973474",
+                    "HL7_MessageTS": "20160223122230"
+                },
+                "Contact_ID": "1600181682",
+                "Patient": {
+                    "PatientHospitalID": "0059613",
+                    "PatientLastName": "Familienaam",
+                    "PatientFirstName": "Voornaam",
+                    "PatientBirthDate": "19460701",
+                    "PatientGender": "F",
+                    "PatientLanguage": "FR",
+                    "PatientNN": "46000138467"
+                },
+                "PlanTime": "201602231300",
+                "PlanTargetLocation": {
+                    "Campus": "001",
+                    "Ward": "2101",
+                    "Room": "207",
+                    "Bed": "01"
+                },
+                "AmbulatoryStatus": ""
+            }
+        }
+
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /questions/2
+
+    + Body
