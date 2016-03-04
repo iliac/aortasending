@@ -7,47 +7,48 @@ Aorta Rest is a simple API allowing tasks to be routed and medical messages to b
 
 Basic list of the list of services:
  - Task Request (Initiator / Requester of a Task) - Task Management Application
-   - Create a Task Request        POST
-   - Delete a Task Request        DELETE
-   - Update a Task Request        UPDATE
+   - Create a Task Request               POST   
+   - Delete a Task Request               DELETE
+   - Update a Task Request               PUT
 
  - Patients
-   - Create a Patient             POST
-   - Update a Patient             PUT
+   - Create a Patient                    POST
+   - Update a Patient                    PUT
 
  - Patient Admissions
-   - Create an Admission          POST
-   - Update an Admission          PUT
+   - Create an Admission                 POST
+   - Update an Admission                 PUT
 
  - Patient Transfers (Pending or Actual)
-   - Create a Transfer            POST
-   - Update a Transfer            PUT
+   - Create a Transfer                   POST
+   - Update a Transfer                   PUT
 
  - Hospital Structure
  
  - Stock
-    - Create a Stock Movement Request   POST
+    - Create a Stock Movement Request    POST
     - Update a Stock Movement Request    PUT
  
  - Appointment
-   - Create an Appointment
-   - Get an Appointment
-   - Delete an Appointment
-   - Update an Appointment
-
+   - Create an Appointment               POST
+   - Delete an Appointment               DELETE
+   - Update an Appointment               PUT 
 
  - Tasks (
-   - Create a Task                POST   https://aorta:443/api/tasks
-   - Get a Task                   GET    https://aorta:443/api/tasks/123456
-   - Delete a Task                DELETE https://aorta:443/api/tasks/123456
-   - Update a Task       PUT    https://aorta:443/api/tasks/123456
-   - Get a list of Tasks GET    https://aorta:443/api/tasks
+   - Create a Task                       POST   https://aorta:443/api/tasks
+   - Delete a Task                       DELETE https://aorta:443/api/tasks/123456
+   - Update a Task                       PUT    https://aorta:443/api/tasks/123456
 
 
-## Questions Collection [/questions]
+## Task Requests Collection [/api/taskrequests]
 
+## Patients Collection [/api/patients]
 
-### Create a New Question [POST]
+## Patient Admissions Collection [/api/admissions]
+
+## Patient Transfers Collection [/api/questions]
+
+### Create a Transfer [POST]
 
 You may create your own question using this action. It takes a JSON
 object containing a question and a collection of answers in the
@@ -108,3 +109,10 @@ form of choices.
             {
                 "AortaOutMBResponse": "Received"
             }
+            
+            
+## Stock Collection [/api/stocks]
+
+## Patient Appointments Collection [/api/appointments]
+
+## Tasks Collection [/api/tasks]
