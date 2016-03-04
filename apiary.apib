@@ -7,32 +7,34 @@ Aorta Rest is a simple API allowing tasks to be routed and medical messages to b
 
 Basic list of the list of services:
  - Task Request (Initiator / Requester of a Task) - Task Management Application
-   - Create a Task Request               POST   
-   - Delete a Task Request               DELETE
-   - Update a Task Request               PUT
+   - Create a Task Request               POST   https://aorta:443/api/tasks
+   - Delete a Task Request               DELETE https://aorta:443/api/tasks/123456
+   - Update a Task Request               PUT    https://aorta:443/api/tasks/123456
 
  - Patients
-   - Create a Patient                    POST
-   - Update a Patient                    PUT
+   - Create a Patient                    POST  https://aorta:443/api/patients
+   - Update a Patient                    PUT   https://aorta:443/api/patients/123456
 
  - Patient Admissions
-   - Create an Admission                 POST
-   - Update an Admission                 PUT
+   - Create an Admission                 POST  https://aorta:443/api/patients/123456/admissions
+   - Update an Admission                 PUT   https://aorta:443/api/patients/123456/admissions/456789
 
  - Patient Transfers (Pending or Actual)
-   - Create a Transfer                   POST
-   - Update a Transfer                   PUT
+   - Create a Transfer                   POST  https://aorta:443/api/patients/123456/transfers
+   - Update a Transfer                   PUT   https://aorta:443/api/patients/123456/transfers/789123
 
  - Hospital Structure
- 
+    - Create a Hospital Structure        POST   https://aorta:443/api/structure
+    - Update a Hospital Structure        PUT    https://aorta:443/api/structure
+
  - Stock
-    - Create a Stock Movement Request    POST
-    - Update a Stock Movement Request    PUT
+    - Create a Stock Movement Request    POST   https://aorta:443/api/stocks
+    - Update a Stock Movement Request    PUT    https://aorta:443/api/stocks/456123
  
  - Appointment
-   - Create an Appointment               POST
-   - Delete an Appointment               DELETE
-   - Update an Appointment               PUT 
+   - Create an Appointment               POST   https://aorta:443/api/patients/123456/appointments
+   - Delete an Appointment               DELETE https://aorta:443/api/patients/123456/appointments/789123
+   - Update an Appointment               PUT    https://aorta:443/api/patients/123456/appointments/789123
 
  - Tasks (
    - Create a Task                       POST   https://aorta:443/api/tasks
