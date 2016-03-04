@@ -5,6 +5,45 @@ HOST: http://polls.apiblueprint.org/
 
 Aorta Rest is a simple API allowing tasks to be routed and medical messages to be transferred.
 
+Basic list of the list of services:
+ - Task Request (Initiator / Requester of a Task) - Task Management Application
+   - Create a Task Request        POST
+   - Delete a Task Request        DELETE
+   - Update a Task Request        UPDATE
+
+ - Patients
+   - Create a Patient             POST
+   - Update a Patient             PUT
+
+ - Patient Admissions
+   - Create an Admission          POST
+   - Update an Admission          PUT
+
+ - Patient Transfers (Pending or Actual)
+   - Create a Transfer            POST
+   - Update a Transfer            PUT
+
+ - Hospital Structure
+ 
+ - Stock
+    - Create a Stock Movement Request   POST
+    - Update a Stock Movement Request    PUT
+ 
+ - Appointment
+   - Create an Appointment
+   - Get an Appointment
+   - Delete an Appointment
+   - Update an Appointment
+
+
+ - Tasks (
+   - Create a Task                POST   https://aorta:443/api/tasks
+   - Get a Task                   GET    https://aorta:443/api/tasks/123456
+   - Delete a Task                DELETE https://aorta:443/api/tasks/123456
+   - Update a Task       PUT    https://aorta:443/api/tasks/123456
+   - Get a list of Tasks GET    https://aorta:443/api/tasks
+
+
 ## Questions Collection [/questions]
 
 
@@ -16,61 +55,46 @@ form of choices.
 
 + Request (application/json)
 
-        { "AortaOutMB":
-            {
-                "AortaOut_Message_ID":"285e708f-a418-4f2a-8df9-eab236d653eb",
-                "AortaOut_Sent_TS":"20160223.122231.780",
-                "AortaRouting":
-                {
-                    "AortaOut_Ready_TS":"20160223.122231.560",
-                    "AortaRoutingVersion":"1.0.0.1",
-                    "AortaRoutingInfo": {}
-                },
-                "AortaIn_Received_TS":"20160223.122231.340",
-                "AortaIn_Message_ID":"cd2587f7-72ec-48a8-9c43-b1ebd32d6ce9",
-                "AortaIn_Created_TS":"20160223.122231.120",
-                "AortaIn_MessageVersion":"1.0.0.1",
-                "AortaIn_MessageType":"HL7_PUSH",
-                "AortaIn_MessageDetail":"ADT^A14",
-                "AortaIn_MessageParams": {},
-                "SourceApplication":"OAZIS",
-                "SourceModule":"PatAdmin",
-                "SourceInstance":"Hostname12345",
-                "TargetApplication":"",
-                "TargetModule":"",
-                "TargetParams": {}
+        {"AortaOutMB":
+        {
+            "AortaOut_Message_ID":"285e708f-a418-4f2a-8df9-eab236d653eb",
+            "AortaOut_Sent_TS":"20160223.122231.780",
+            "AortaOut_MessageVersion":"1.0.0.1",
+            "AortaOut_MessageType":"HL7_Sourced",
+            "AortaRouting_Version":"1.0.0.1",
+            "AortaRouting_Ready_TS":"20160223.122231.560",
+            "AortaRouting_Info": {},
+            "AortaIn_Message_ID":"2f12d80d-ceff-426f-9d2c-6d388670f5b2"
+        },
+        "HL7_Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "PendingAdmit",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A14",
+                "HL7_ControlID": "00973474",
+                "HL7_MessageTS": "20160223122230"
             },
-            "HL7_PUSH":
-            {
-                "Message_ID": "a8e2a4e0-5519-4acd-bd4c-6567e74f406a",
-                "MessageType": "OAZIS_HL7_ADT",
-                "MessageDetail": "PendingAdmit",
-                "HL7_MSH": {
-                    "HL7_SendingApplication": "OAZIS",
-                    "HL7_MessageType": "ADT^A14",
-                    "HL7_ControlID": "00973474",
-                    "HL7_MessageTS": "20160223122230"
-                },
-                "Contact_ID": "1600181682",
-                "Patient": {
-                    "PatientHospitalID": "0059613",
-                    "PatientLastName": "Familienaam",
-                    "PatientFirstName": "Voornaam",
-                    "PatientBirthDate": "19460701",
-                    "PatientGender": "F",
-                    "PatientLanguage": "FR",
-                    "PatientNN": "46000138467"
-                },
-                "PlanTime": "201602231300",
-                "PlanTargetLocation": {
-                    "Campus": "001",
-                    "Ward": "2101",
-                    "Room": "207",
-                    "Bed": "01"
-                },
-                "AmbulatoryStatus": ""
-            }
-        }
+            "Contact_ID": "1600181682",
+            "Patient": {
+                "PatientHospitalID": "0059613",
+                "PatientLastName": "Familienaam",
+                "PatientFirstName": "Voornaam",
+                "PatientBirthDate": "19460701",
+                "PatientGender": "F",
+                "PatientLanguage": "FR",
+                "PatientNN": "46000138467"
+            },
+            "PlanTime": "201602231300",
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "2101",
+                "Room": "207",
+                "Bed": "01"
+            },
+            "AmbulatoryStatus": ""
+        }}
 
 
 + Response 201 (application/json)
@@ -80,3 +104,7 @@ form of choices.
             Location: /questions/2
 
     + Body
+    
+            {
+                "AortaOutMBResponse": "Received"
+            }
