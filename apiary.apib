@@ -19,9 +19,21 @@ Basic list of the list of services:
    - Create an Admission                 POST  https://aorta:443/api/patients/123456/admissions
    - Update an Admission                 PUT   https://aorta:443/api/patients/123456/admissions/456789
 
- - Patient Transfers (Pending or Actual)
+ - Patient Pending Admissions
+   - Create a Pending Admission          POST  https://aorta:443/api/patients/123456/pending_admissions
+   - Cancel a Pending Admission          PUT   https://aorta:443/api/patients/123456/pending_admissions/456789
+
+ - Patient Pending Discharges
+   - Create a Pending Discharge          POST  https://aorta:443/api/patients/123456/pending_discharges
+   - Cancel a Pending Discharge          PUT   https://aorta:443/api/patients/123456/pending_discharges/456789
+
+ - Patient Transfers
    - Create a Transfer                   POST  https://aorta:443/api/patients/123456/transfers
-   - Update a Transfer                   PUT   https://aorta:443/api/patients/123456/transfers/789123
+   - Cancel a Transfer                   PUT   https://aorta:443/api/patients/123456/transfers/789123
+
+ - Patient Pending Transfers
+   - Create a Pending Transfer           PUT   https://aorta:443/api/patients/123456/pending_transfers
+   - Cancel a Pending Transfer           PUT   https://aorta:443/api/patients/123456/pending_transfers/789123
 
  - Hospital Structure
     - Update a Hospital Structure        PUT    https://aorta:443/api/structure
@@ -45,15 +57,15 @@ Basic list of the list of services:
 
 ## Patients Collection [/api/patients]
 
-## Patient Admissions Collection [/api/admissions]
+## Admissions Collection [/api/admissions]
 
-## Patient Transfers Collection [/api/questions]
+## Patient Pending Admissions Collection [/api/pending_admissions]
 
-### Create a Transfer [POST]
+### Create a Pending Admit [POST]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+This message creates a Pending Admission (in the future). Remark that this is normally followed
+by a Create Admission at the moment of the patient arriving at the admission desk.
+The Pending Admission is then converted into a true Admission.
 
 + Request (application/json)
 
@@ -98,12 +110,11 @@ form of choices.
             "AmbulatoryStatus": ""
         }}
 
-
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /questions/2
+            Location: /patients/123456/pending_admissions/456789
 
     + Body
     
@@ -111,7 +122,317 @@ form of choices.
                 "AortaOutMBResponse": "Received"
             }
             
+### Cancel a Pending Admit [PUT]
+
+This message cancels a Pending Admission (in the future).
+
++ Request (application/json)
+
+        {"AortaOutMB":
+        {
+            "AortaOut_Message_ID":"17ad0f2f-f1bf-447d-a893-d72f4071e6a2",
+            "AortaOut_Sent_TS":"20160223.133352.780",
+            "AortaOut_MessageVersion":"1.0.0.1",
+            "AortaOut_MessageType":"HL7_Sourced",
+            "AortaRouting_Version":"1.0.0.1",
+            "AortaRouting_Ready_TS":"20160223.133352.560",
+            "AortaRouting_Info": {},
+            "AortaIn_Message_ID":"ffe27f0d-9871-4e3b-88e7-d475d7ab6a59"
+        },
+        "HL7_Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "CancelPendingAdmit",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A27",
+                "HL7_ControlID": "00973733",
+                "HL7_MessageTS": "20160223133351"
+            },
+            "Contact_ID": "1600181682",
+            "Patient": {
+                "PatientHospitalID": "0059613",
+                "PatientLastName": "Familienaam",
+                "PatientFirstName": "Voornaam",
+                "PatientBirthDate": "19460701",
+                "PatientGender": "F",
+                "PatientLanguage": "FR",
+                "PatientNN": "46000138467"
+            },
+            "PlanTime": "201602231300",
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "2101",
+                "Room": "207",
+                "Bed": "01"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /patients/123456/pending_admissions/456789
+
+    + Body
+    
+            {
+                "AortaOutMBResponse": "Received"
+            }
+
+## Patient Pending Discherges Collection [/api/pending_discharges]
+
+### Create a Pending Discharge [POST]
+
+This message creates a Pending Discharge (in the future).
+
++ Request (application/json)
+
+        {"AortaOutMB":
+        {
+            "AortaOut_Message_ID":"cdb48005-4ad3-4bb7-aeb6-a6c144619743",
+            "AortaOut_Sent_TS":"20160223.161249.780",
+            "AortaOut_MessageVersion":"1.0.0.1",
+            "AortaOut_MessageType":"HL7_Sourced",
+            "AortaRouting_Version":"1.0.0.1",
+            "AortaRouting_Ready_TS":"20160223.161249.560",
+            "AortaRouting_Info": {},
+            "AortaIn_Message_ID":"e22d9e54-df33-4894-849c-4850585ba66a"
+        },
+        "HL7_Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "PendingDischarge",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A16",
+                "HL7_ControlID": "00974445",
+                "HL7_MessageTS": "20160223161249"
+            },
+            "Contact_ID": "1600246351",
+            "Patient": {
+                "PatientHospitalID": "0084874",
+                "PatientLastName": "FamilieNaam3",
+                "PatientFirstName": "Voornaam3",
+                "PatientBirthDate": "19500415",
+                "PatientGender": "M",
+                "PatientLanguage": "FR",
+                "PatientNN": "50041504501"
+            },
+            "PlanTime": "201602232000",
+            "PlanSourceLocation": {
+                "Campus": "001",
+                "Ward": "1500",
+                "Room": "001",
+                "Bed": "28"
+            },
+            "AmbulatoryStatus": ""
+        }}
+        
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /patients/123456/pending_discharge/456789
+
+    + Body
+    
+            {
+                "AortaOutMBResponse": "Received"
+            }
             
+### Cancel a Pending Discharge [PUT]
+
+This message cancels a Pending Discharge (in the future).
+
++ Request (application/json)
+
+        {"AortaOutMB":
+        {
+            "AortaOut_Message_ID":"9848df77-8dd8-4cf3-b308-1adab1904a55",
+            "AortaOut_Sent_TS":"20160223.150628.780",
+            "AortaOut_MessageVersion":"1.0.0.1",
+            "AortaOut_MessageType":"HL7_Sourced",
+            "AortaRouting_Version":"1.0.0.1",
+            "AortaRouting_Ready_TS":"20160223.150628.560",
+            "AortaRouting_Info": {},
+            "AortaIn_Message_ID":"ead49c92-2efb-4ce2-b224-6aaebd332c44"
+        },
+        "HL7_Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "CancelPendingDischarge",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A25",
+                "HL7_ControlID": "00974219",
+                "HL7_MessageTS": "20160223150628"
+            },
+            "Contact_ID": "1600246351",
+            "Patient": {
+                "PatientHospitalID": "0177661",
+                "PatientLastName": "Familienaam6",
+                "PatientFirstName": "Voornaam6",
+                "PatientBirthDate": "19330415",
+                "PatientGender": "M",
+                "PatientLanguage": "NL",
+                "PatientNN": "33041536107"
+            },
+            "PlanTime": "201602232000",
+            "PlanSourceLocation": {
+                "Campus": "001",
+                "Ward": "2101",
+                "Room": "001",
+                "Bed": "01"
+            },
+            "AmbulatoryStatus": ""
+        }}
+        
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /patients/123456/pending_discharge/456789
+
+    + Body
+    
+            {
+                "AortaOutMBResponse": "Received"
+            }
+
+## Patient Pending Transfers Collection [/api/pending_transfers]
+
+### Create a Pending Transfer [POST]
+
+This message creates a Pending Transfer (in the future).
+
++ Request (application/json)
+
+        {"AortaOutMB":
+        {
+            "AortaOut_Message_ID":"8d9c0741-682e-41cf-aa0a-f755164e8992",
+            "AortaOut_Sent_TS":"20160223.140451.780",
+            "AortaOut_MessageVersion":"1.0.0.1",
+            "AortaOut_MessageType":"HL7_Sourced",
+            "AortaRouting_Version":"1.0.0.1",
+            "AortaRouting_Ready_TS":"20160223.140451.560",
+            "AortaRouting_Info": {},
+            "AortaIn_Message_ID":"ee43cc4b-7836-4bde-890e-8ff7b1e0a5ac"
+        },
+        "HL7_Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "PendingTransfer",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A15",
+                "HL7_ControlID": "00973895",
+                "HL7_MessageTS": "20160223140451"
+            },
+            "Contact_ID": "1600246351",
+            "Patient": {
+                "PatientHospitalID": "0018382",
+                "PatientLastName": "Familienaam2",
+                "PatientFirstName": "Voornaam2",
+                "PatientBirthDate": "19330702",
+                "PatientGender": "M",
+                "PatientLanguage": "NL",
+                "PatientNN": "33070232368"
+            },
+            "PlanTime": "201602232000",
+            "PlanSourceLocation": {
+                "Campus": "001",
+                "Ward": "1500",
+                "Room": "001",
+                "Bed": "28"
+            },
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "3002",
+                "Room": "701",
+                "Bed": "01"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /patients/123456/pending_transfers/456789
+
+    + Body
+    
+            {
+                "AortaOutMBResponse": "Received"
+            }
+
+### Cancels a Pending Transfer [PUT]
+
+This message creates a Pending Transfer (in the future).
+
++ Request (application/json)
+
+        {"AortaOutMB":
+        {
+            "AortaOut_Message_ID":"6c0709d1-9280-45ad-9c92-83881a85c900",
+            "AortaOut_Sent_TS":"20160223.150628.780",
+            "AortaOut_MessageVersion":"1.0.0.1",
+            "AortaOut_MessageType":"HL7_Sourced",
+            "AortaRouting_Version":"1.0.0.1",
+            "AortaRouting_Ready_TS":"20160223.150628.560",
+            "AortaRouting_Info": {},
+            "AortaIn_Message_ID":"ad8bf26c-e87d-4073-b701-8ef2fd30993e"
+        },
+        "HL7_Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "CancelPendingTransfer",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A26",
+                "HL7_ControlID": "00974219",
+                "HL7_MessageTS": "20160223150628"
+            },
+            "Contact_ID": "1600246351",
+            "Patient": {
+                "PatientHospitalID": "0018382",
+                "PatientLastName": "Familienaam2",
+                "PatientFirstName": "Voornaam2",
+                "PatientBirthDate": "19330702",
+                "PatientGender": "M",
+                "PatientLanguage": "NL",
+                "PatientNN": "33070232368"
+            },
+            "PlanTime": "201602232000",
+            "PlanSourceLocation": {
+                "Campus": "001",
+                "Ward": "1500",
+                "Room": "001",
+                "Bed": "28"
+            },
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "3002",
+                "Room": "701",
+                "Bed": "01"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /patients/123456/pending_transfers/456789
+
+    + Body
+    
+            {
+                "AortaOutMBResponse": "Received"
+            }
+
 ## Stock Collection [/api/stocks]
 
 ## Patient Appointments Collection [/api/appointments]
