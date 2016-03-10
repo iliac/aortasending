@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: http://polls.apiblueprint.org/
 
-# AORTA Message Broker Sending Messages Rest
+# AORTA Message Broker Sending Messages
 
 Aorta Rest is a simple API allowing tasks to be routed and medical messages to be transferred.
 
@@ -45,6 +45,16 @@ Basic list of the list of services:
 + Request (application/json)
 
 + Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/taskrequests/123456
+
+    + Body
+    
+            {
+                "AortaMessageBrokerOutputResponse": "Received"
+            }
 
 ### Delete a Task Request [DELETE]
 
@@ -206,7 +216,7 @@ PUT Requests
 
     + Headers
 
-            Location: /patients/123456/admissions/456789
+            Location: /api/patients/123456/admissions/456789
 
     + Body
     
@@ -521,7 +531,7 @@ PUT Requests
 
     + Headers
 
-            Location: /patients/123456/admissions/456789
+            Location: /api/patients/123456/admissions/456789
 
     + Body
     
@@ -643,7 +653,7 @@ PUT Requests
 
     + Headers
 
-            Location: /patients/123456/pending_transfers/456789
+            Location: /api/patients/123456/transfers/456789
 
     + Body
     
@@ -755,7 +765,7 @@ PUT Requests
 
     + Headers
 
-            Location: /patients/123456/pending_transfers/456789
+            Location: /api/patients/123456/transfers/456789
 
     + Body
     
@@ -768,3 +778,5 @@ PUT Requests
 ## Patient Appointments Collection [/api/appointments]
 
 ## Tasks Collection [/api/tasks]
+
+ed
