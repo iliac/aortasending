@@ -11,29 +11,13 @@ Basic list of the list of services:
    - Delete a Task Request               DELETE https://aorta:443/api/tasks/123456
    - Update a Task Request               PUT    https://aorta:443/api/tasks/123456
 
- - Patients
-   - Create a Patient                    POST  https://aorta:443/api/patients
-   - Update a Patient                    PUT   https://aorta:443/api/patients/123456
-
  - Patient Admissions
    - Create an Admission                 POST  https://aorta:443/api/patients/123456/admissions
    - Update an Admission                 PUT   https://aorta:443/api/patients/123456/admissions/456789
 
- - Patient Pending Admissions
-   - Create a Pending Admission          POST  https://aorta:443/api/patients/123456/pending_admissions
-   - Cancel a Pending Admission          PUT   https://aorta:443/api/patients/123456/pending_admissions/456789
-
- - Patient Pending Discharges
-   - Create a Pending Discharge          POST  https://aorta:443/api/patients/123456/pending_discharges
-   - Cancel a Pending Discharge          PUT   https://aorta:443/api/patients/123456/pending_discharges/456789
-
  - Patient Transfers
    - Create a Transfer                   POST  https://aorta:443/api/patients/123456/transfers
    - Cancel a Transfer                   PUT   https://aorta:443/api/patients/123456/transfers/789123
-
- - Patient Pending Transfers
-   - Create a Pending Transfer           PUT   https://aorta:443/api/patients/123456/pending_transfers
-   - Cancel a Pending Transfer           PUT   https://aorta:443/api/patients/123456/pending_transfers/789123
 
  - Hospital Structure
     - Update a Hospital Structure        PUT    https://aorta:443/api/structure
@@ -52,35 +36,143 @@ Basic list of the list of services:
    - Delete a Task                       DELETE https://aorta:443/api/tasks/123456
    - Update a Task                       PUT    https://aorta:443/api/tasks/123456
 
-
 ## Task Requests Collection [/api/taskrequests]
 
-## Patients Collection [/api/patients]
-
-## Admissions Collection [/api/admissions]
-
-## Patient Pending Admissions Collection [/api/pending_admissions]
-
-### Create a Pending Admit [POST]
-
-This message creates a Pending Admission (in the future). Remark that this is normally followed
-by a Create Admission at the moment of the patient arriving at the admission desk.
-The Pending Admission is then converted into a true Admission.
+### Create a Task Request [POST]
 
 + Request (application/json)
 
-        {"AortaOutMB":
++ Request (application/json)
+
++ Response 201 (application/json)
+
+### Delete a Task Request [DELETE]
+
++ Response 201 (application/json)
+
+### Update a Task Request [PUT]
+
++ Response 201 (application/json)
+
+## Patient Admissions Collection [/api/patients/123456/admissions]
+
+POST Requests
+ - First request: This message creates a (resident) admission for a given patient.
+ - Second request: This message creates an (ambulant) admission for a given patient.
+ - Third request: This message creates a Pending Admission (in the future). Remark that this is normally followed by a Create Admission at the moment of the patient arriving at the admission desk. The Pending Admission is then converted into a true Admission.
+
+PUT Requests
+ - First request: This message creates a Patient Discharge
+ - Second request: This message creates a Pending Discharge (in the future)
+ - Third request: This message cancels any Admission (remark that this is not a delete)
+ - Fourth request: This message cancels a Pending Admission (in the future)
+ - Fifth request: This message cancels a Patient Discharge
+ - Sixth request: This message cancels a Pending Discharge (in the future)
+ - Seventh request: This message updates Patient Information
+
+### Create a Patient Admission [POST]
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
         {
-            "AortaOut_Message_ID":"285e708f-a418-4f2a-8df9-eab236d653eb",
-            "AortaOut_Sent_TS":"20160223.122231.780",
-            "AortaOut_MessageVersion":"1.0.0.1",
-            "AortaOut_MessageType":"HL7_Sourced",
-            "AortaRouting_Version":"1.0.0.1",
-            "AortaRouting_Ready_TS":"20160223.122231.560",
-            "AortaRouting_Info": {},
-            "AortaIn_Message_ID":"2f12d80d-ceff-426f-9d2c-6d388670f5b2"
+            "AortaOutMessageID":"6419c4ff-d87e-47c5-bafd-31d5d7ed27dc",
+            "AortaOutSendTime":"20150217.234826.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.234826.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"860836fe-2164-4c4f-a6c6-58c930e560bc"
         },
-        "HL7_Sourced":
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "PatientResidentAdmit",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A01",
+                "HL7_ControlID": "00129020",
+                "HL7_MessageTS": "20150217234826"
+            },
+            "ContactID": "1500215161",
+            "Patient": {
+                "PatientHospitalID": "1413053",
+                "PatientLastName": "AchternaamA01",
+                "PatientFirstName": "VoornaamA01",
+                "PatientBirthDate": "20150217",
+                "PatientGender": "F",
+                "PatientLanguage": "FR",
+                "PatientNN": "12345678901"
+            },
+            "PlanTime": "201502172256",
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "2600",
+                "Room": "114",
+                "Bed": "01B"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOut":
+        {
+            "AortaOutMessageID":"285e708f-a418-4f2a-8df9-eab236d653eb",
+            "AortaOutSendTime":"20150217.234717.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.234717.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"2f12d80d-ceff-426f-9d2c-6d388670f5b2"
+        },
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "PatientAmbulantAdmit",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A04",
+                "HL7_ControlID": "00129018",
+                "HL7_MessageTS": "20150217234717"
+            },
+            "ContactID": "1500215150",
+            "Patient": {
+                "PatientHospitalID": "0122084",
+                "PatientLastName": "AchternaamA04",
+                "PatientFirstName": "VoornaamA04",
+                "PatientBirthDate": "19770527",
+                "PatientGender": "M",
+                "PatientLanguage": "NL",
+                "PatientNN": "01234567890"
+            },
+            "PlanTime": "201502172346",
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "1500",
+                "Room": "001",
+                "Bed": "05"
+            },
+            "AmbulatoryStatus": ""
+        }}
+        
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"285e708f-a418-4f2a-8df9-eab236d653eb",
+            "AortaOutSendTime":"20160223.122231.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20160223.122231.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"2f12d80d-ceff-426f-9d2c-6d388670f5b2"
+        },
+        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PendingAdmit",
@@ -90,7 +182,7 @@ The Pending Admission is then converted into a true Admission.
                 "HL7_ControlID": "00973474",
                 "HL7_MessageTS": "20160223122230"
             },
-            "Contact_ID": "1600181682",
+            "ContactID": "1600181682",
             "Patient": {
                 "PatientHospitalID": "0059613",
                 "PatientLastName": "Familienaam",
@@ -114,93 +206,73 @@ The Pending Admission is then converted into a true Admission.
 
     + Headers
 
-            Location: /patients/123456/pending_admissions/456789
+            Location: /patients/123456/admissions/456789
 
     + Body
     
             {
-                "AortaOutMBResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Received"
             }
-            
-### Cancel a Pending Admit [PUT]
 
-This message cancels a Pending Admission (in the future).
+### Update a patient admission [PUT]
 
 + Request (application/json)
 
-        {"AortaOutMB":
+        {"AortaMessageBrokerOutput":
         {
-            "AortaOut_Message_ID":"17ad0f2f-f1bf-447d-a893-d72f4071e6a2",
-            "AortaOut_Sent_TS":"20160223.133352.780",
-            "AortaOut_MessageVersion":"1.0.0.1",
-            "AortaOut_MessageType":"HL7_Sourced",
-            "AortaRouting_Version":"1.0.0.1",
-            "AortaRouting_Ready_TS":"20160223.133352.560",
-            "AortaRouting_Info": {},
-            "AortaIn_Message_ID":"ffe27f0d-9871-4e3b-88e7-d475d7ab6a59"
+            "AortaOutMessageID":"cffa6f0b-5b13-4f87-a2cd-3b1f02fd3d42",
+            "AortaOutSendTime":"20150217.194706.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.194706.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"ab0f9107-af0b-417e-9aad-14b740845b66"
         },
-        "HL7_Sourced":
+        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
-            "MessageDetail": "CancelPendingAdmit",
+            "MessageDetail": "PatientDischarge",
             "HL7_MSH": {
                 "HL7_SendingApplication": "OAZIS",
-                "HL7_MessageType": "ADT^A27",
-                "HL7_ControlID": "00973733",
-                "HL7_MessageTS": "20160223133351"
+                "HL7_MessageType": "ADT^A03",
+                "HL7_ControlID": "00128948",
+                "HL7_MessageTS": "20150217194706"
             },
-            "Contact_ID": "1600181682",
+            "ContactID": "1500214656",
             "Patient": {
-                "PatientHospitalID": "0059613",
-                "PatientLastName": "Familienaam",
-                "PatientFirstName": "Voornaam",
-                "PatientBirthDate": "19460701",
-                "PatientGender": "F",
-                "PatientLanguage": "FR",
-                "PatientNN": "46000138467"
+                "PatientHospitalID": "0193437",
+                "PatientLastName": "AchternaamA03",
+                "PatientFirstName": "VoornaamA03",
+                "PatientBirthDate": "20090710",
+                "PatientGender": "M",
+                "PatientLanguage": "NL",
+                "PatientNN": "67890123456"
             },
-            "PlanTime": "201602231300",
-            "PlanTargetLocation": {
+            "PlanTime": "201502171830",
+            "PlanSourceLocation": {
                 "Campus": "001",
-                "Ward": "2101",
-                "Room": "207",
-                "Bed": "01"
+                "Ward": "1500",
+                "Room": "001",
+                "Bed": "03"
             },
             "AmbulatoryStatus": ""
         }}
 
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /patients/123456/pending_admissions/456789
-
-    + Body
-    
-            {
-                "AortaOutMBResponse": "Received"
-            }
-
-## Patient Pending Discherges Collection [/api/pending_discharges]
-
-### Create a Pending Discharge [POST]
-
-This message creates a Pending Discharge (in the future).
-
 + Request (application/json)
 
-        {"AortaOutMB":
+        {"AortaMessageBrokerOutput":
         {
-            "AortaOut_Message_ID":"cdb48005-4ad3-4bb7-aeb6-a6c144619743",
-            "AortaOut_Sent_TS":"20160223.161249.780",
-            "AortaOut_MessageVersion":"1.0.0.1",
-            "AortaOut_MessageType":"HL7_Sourced",
-            "AortaRouting_Version":"1.0.0.1",
-            "AortaRouting_Ready_TS":"20160223.161249.560",
-            "AortaRouting_Info": {},
-            "AortaIn_Message_ID":"e22d9e54-df33-4894-849c-4850585ba66a"
+            "AortaOutMessageID":"cdb48005-4ad3-4bb7-aeb6-a6c144619743",
+            "AortaOutSendTime":"20160223.161249.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20160223.161249.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"e22d9e54-df33-4894-849c-4850585ba66a"
         },
-        "HL7_Sourced":
+        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PendingDischarge",
@@ -210,7 +282,7 @@ This message creates a Pending Discharge (in the future).
                 "HL7_ControlID": "00974445",
                 "HL7_MessageTS": "20160223161249"
             },
-            "Contact_ID": "1600246351",
+            "ContactID": "1600246351",
             "Patient": {
                 "PatientHospitalID": "0084874",
                 "PatientLastName": "FamilieNaam3",
@@ -229,37 +301,150 @@ This message creates a Pending Discharge (in the future).
             },
             "AmbulatoryStatus": ""
         }}
-        
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /patients/123456/pending_discharge/456789
-
-    + Body
-    
-            {
-                "AortaOutMBResponse": "Received"
-            }
-            
-### Cancel a Pending Discharge [PUT]
-
-This message cancels a Pending Discharge (in the future).
 
 + Request (application/json)
 
-        {"AortaOutMB":
+        {"AortaMessageBrokerOutput":
         {
-            "AortaOut_Message_ID":"9848df77-8dd8-4cf3-b308-1adab1904a55",
-            "AortaOut_Sent_TS":"20160223.150628.780",
-            "AortaOut_MessageVersion":"1.0.0.1",
-            "AortaOut_MessageType":"HL7_Sourced",
-            "AortaRouting_Version":"1.0.0.1",
-            "AortaRouting_Ready_TS":"20160223.150628.560",
-            "AortaRouting_Info": {},
-            "AortaIn_Message_ID":"ead49c92-2efb-4ce2-b224-6aaebd332c44"
+            "AortaOutMessageID":"d7ddcc70-2410-44b1-b88c-eacae5ebf2ce",
+            "AortaOutSendTime":"20150217.172900.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.172900.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"7fb385e4-7079-43fc-b40e-78947f8c24c3"
         },
-        "HL7_Sourced":
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "CancelPatientAdmit",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A11",
+                "HL7_ControlID": "00128824",
+                "HL7_MessageTS": "20150217172900"
+            },
+            "ContactID": "1500214833",
+            "Patient": {
+                "PatientHospitalID": "0054098",
+                "PatientLastName": "AchternaamA11",
+                "PatientFirstName": "VoornaamA11",
+                "PatientBirthDate": "19700703",
+                "PatientGender": "M",
+                "PatientLanguage": "NL",
+                "PatientNN": "90123456789"
+            },
+            "PlanTime": "201502172346",
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "1950",
+                "Room": "001",
+                "Bed": "397"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"17ad0f2f-f1bf-447d-a893-d72f4071e6a2",
+            "AortaOutSendTime":"20160223.133352.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20160223.133352.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"ffe27f0d-9871-4e3b-88e7-d475d7ab6a59"
+        },
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "CancelPendingAdmit",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A27",
+                "HL7_ControlID": "00973733",
+                "HL7_MessageTS": "20160223133351"
+            },
+            "ContactID": "1600181682",
+            "Patient": {
+                "PatientHospitalID": "0059613",
+                "PatientLastName": "Familienaam",
+                "PatientFirstName": "Voornaam",
+                "PatientBirthDate": "19460701",
+                "PatientGender": "F",
+                "PatientLanguage": "FR",
+                "PatientNN": "46000138467"
+            },
+            "PlanTime": "201602231300",
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "2101",
+                "Room": "207",
+                "Bed": "01"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"ad2b7ec3-60f2-48eb-aa5a-9b9dd178c998",
+            "AortaOutSendTime":"20150217.143714.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.143714.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"a2a4f57b-253a-4746-8e22-525bb9312663"
+        },
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "CancelPatientDischarge",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A13",
+                "HL7_ControlID": "00128379",
+                "HL7_MessageTS": "20150217143714"
+            },
+            "ContactID": "1500128980",
+            "Patient": {
+                "PatientHospitalID": "0162344",
+                "PatientLastName": "AchternaamA13",
+                "PatientFirstName": "VoornaamA13",
+                "PatientBirthDate": "19781007",
+                "PatientGender": "F",
+                "PatientLanguage": "NL",
+                "PatientNN": "45678901234"
+            },
+            "PlanTime": "201501291915",
+            "PlanSourceLocation": {
+                "Campus": "001",
+                "Ward": "3700",
+                "Room": "165",
+                "Bed": "01"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"9848df77-8dd8-4cf3-b308-1adab1904a55",
+            "AortaOutSendTime":"20160223.150628.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20160223.150628.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"ead49c92-2efb-4ce2-b224-6aaebd332c44"
+        },
+        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPendingDischarge",
@@ -269,7 +454,7 @@ This message cancels a Pending Discharge (in the future).
                 "HL7_ControlID": "00974219",
                 "HL7_MessageTS": "20160223150628"
             },
-            "Contact_ID": "1600246351",
+            "ContactID": "1600246351",
             "Patient": {
                 "PatientHospitalID": "0177661",
                 "PatientLastName": "Familienaam6",
@@ -288,39 +473,137 @@ This message cancels a Pending Discharge (in the future).
             },
             "AmbulatoryStatus": ""
         }}
-        
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"e43b7b42-194e-4cab-938e-7542a957824d",
+            "AortaOutSendTime":"20150217.141407.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.141407.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"492dd920-1ca3-433a-aa62-e332c37566b8"
+        },
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "UpdatePatientInfo",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A08",
+                "HL7_ControlID": "00128300",
+                "HL7_MessageTS": "20150217141407"
+            },
+            "ContactID": "1500212534",
+            "Patient": {
+                "PatientHospitalID": "0081668",
+                "PatientLastName": "AchternaamA08",
+                "PatientFirstName": "VoornaamA08",
+                "PatientBirthDate": "19840725",
+                "PatientGender": "F",
+                "PatientLanguage": "NL",
+                "PatientNN": "34567890123"
+            },
+            "PlanTime": "201502171319",
+            "PlanLocation": {
+                "Campus": "001",
+                "Ward": "1500",
+                "Room": "001",
+                "Bed": "22"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /patients/123456/pending_discharge/456789
+            Location: /patients/123456/admissions/456789
 
     + Body
     
             {
-                "AortaOutMBResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Received"
             }
 
-## Patient Pending Transfers Collection [/api/pending_transfers]
+## Patient Transfers Collection [/api/patients/123456/transfers]
 
-### Create a Pending Transfer [POST]
+POST Requests
+ - First request: This message creates a Patient Transfer
+ - Second request: This message creates a Pending Transfer (in the future)
 
-This message creates a Pending Transfer (in the future).
+PUT Requests
+ - First request: This message cancels a Patient Transfer
+ - Second request: This message creates a Pending Transfer (in the future)
+
+### Create a Patient Transfer [POST]
 
 + Request (application/json)
 
-        {"AortaOutMB":
+        {"AortaMessageBrokerOutput":
         {
-            "AortaOut_Message_ID":"8d9c0741-682e-41cf-aa0a-f755164e8992",
-            "AortaOut_Sent_TS":"20160223.140451.780",
-            "AortaOut_MessageVersion":"1.0.0.1",
-            "AortaOut_MessageType":"HL7_Sourced",
-            "AortaRouting_Version":"1.0.0.1",
-            "AortaRouting_Ready_TS":"20160223.140451.560",
-            "AortaRouting_Info": {},
-            "AortaIn_Message_ID":"ee43cc4b-7836-4bde-890e-8ff7b1e0a5ac"
+            "AortaOutMessageID":"3bbbca28-0d25-4350-a3e9-36b103686487",
+            "AortaOutSendTime":"20150217.172456.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.172456.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"e01a313c-7544-4d79-b69a-92dfe213e2fc"
         },
-        "HL7_Sourced":
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "PatientTransfer",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A02",
+                "HL7_ControlID": "00128814",
+                "HL7_MessageTS": "20150217172456"
+            },
+            "ContactID": "1500207693",
+            "Patient": {
+                "PatientHospitalID": "0054098",
+                "PatientLastName": "AchternaamA02",
+                "PatientFirstName": "VoornaamA02",
+                "PatientBirthDate": "19570905",
+                "PatientGender": "M",
+                "PatientLanguage": "NL",
+                "PatientNN": "89012345678"
+            },
+            "PlanTime": "201502161316",
+            "PlanSourceLocation": {
+                "Campus": "001",
+                "Ward": "2202",
+                "Room": "275",
+                "Bed": "01"
+            },
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "2202",
+                "Room": "282",
+                "Bed": "02"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"8d9c0741-682e-41cf-aa0a-f755164e8992",
+            "AortaOutSendTime":"20160223.140451.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20160223.140451.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"ee43cc4b-7836-4bde-890e-8ff7b1e0a5ac"
+        },
+        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PendingTransfer",
@@ -330,7 +613,7 @@ This message creates a Pending Transfer (in the future).
                 "HL7_ControlID": "00973895",
                 "HL7_MessageTS": "20160223140451"
             },
-            "Contact_ID": "1600246351",
+            "ContactID": "1600246351",
             "Patient": {
                 "PatientHospitalID": "0018382",
                 "PatientLastName": "Familienaam2",
@@ -365,27 +648,74 @@ This message creates a Pending Transfer (in the future).
     + Body
     
             {
-                "AortaOutMBResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Received"
             }
 
-### Cancels a Pending Transfer [PUT]
-
-This message creates a Pending Transfer (in the future).
+### Update a Patient Transfer [PUT]
 
 + Request (application/json)
 
-        {"AortaOutMB":
+        {"AortaMessageBrokerOutput":
         {
-            "AortaOut_Message_ID":"6c0709d1-9280-45ad-9c92-83881a85c900",
-            "AortaOut_Sent_TS":"20160223.150628.780",
-            "AortaOut_MessageVersion":"1.0.0.1",
-            "AortaOut_MessageType":"HL7_Sourced",
-            "AortaRouting_Version":"1.0.0.1",
-            "AortaRouting_Ready_TS":"20160223.150628.560",
-            "AortaRouting_Info": {},
-            "AortaIn_Message_ID":"ad8bf26c-e87d-4073-b701-8ef2fd30993e"
+            "AortaOutMessageID":"55fa2be1-8b5d-4779-a89a-cde7652d025a",
+            "AortaOutSendTime":"20150217.171546.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.171546.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"bcbdb9b3-d5f9-4b08-8e1a-9a5aaf26cc16"
         },
-        "HL7_Sourced":
+        "HL7Sourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "MessageDetail": "CancelPatientTransfer",
+            "HL7_MSH": {
+                "HL7_SendingApplication": "OAZIS",
+                "HL7_MessageType": "ADT^A12",
+                "HL7_ControlID": "00128786",
+                "HL7_MessageTS": "20150217171546"
+            },
+            "ContactID": "1500196401",
+            "Patient": {
+                "PatientHospitalID": "0012017",
+                "PatientLastName": "AchternaamA12",
+                "PatientFirstName": "VoornaamA12",
+                "PatientBirthDate": "19630629",
+                "PatientGender": "F",
+                "PatientLanguage": "NL",
+                "PatientNN": "78901234567"
+            },
+            "PlanTime": "201502160850",
+            "PlanSourceLocation": {
+                "Campus": "001",
+                "Ward": "2201",
+                "Room": "267",
+                "Bed": "01"
+            },
+            "PlanTargetLocation": {
+                "Campus": "001",
+                "Ward": "2201",
+                "Room": "259",
+                "Bed": "02"
+            },
+            "AmbulatoryStatus": ""
+        }}
+
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"6c0709d1-9280-45ad-9c92-83881a85c900",
+            "AortaOutSendTime":"20160223.150628.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"HL7Sourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20160223.150628.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"ad8bf26c-e87d-4073-b701-8ef2fd30993e"
+        },
+        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPendingTransfer",
@@ -395,7 +725,7 @@ This message creates a Pending Transfer (in the future).
                 "HL7_ControlID": "00974219",
                 "HL7_MessageTS": "20160223150628"
             },
-            "Contact_ID": "1600246351",
+            "ContactID": "1600246351",
             "Patient": {
                 "PatientHospitalID": "0018382",
                 "PatientLastName": "Familienaam2",
@@ -430,7 +760,7 @@ This message creates a Pending Transfer (in the future).
     + Body
     
             {
-                "AortaOutMBResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Received"
             }
 
 ## Stock Collection [/api/stocks]
