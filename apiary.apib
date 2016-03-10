@@ -5,44 +5,67 @@ HOST: http://polls.apiblueprint.org/
 
 Aorta Rest is a simple API allowing tasks to be routed and medical messages to be transferred.
 
-Basic list of the list of services:
- - Task Request (Initiator / Requester of a Task) - Task Management Application
-   - Create a Task Request               POST   https://aorta:443/api/tasks
-   - Delete a Task Request               DELETE https://aorta:443/api/tasks/123456
-   - Update a Task Request               PUT    https://aorta:443/api/tasks/123456
+List of services that will be called on remote applications:
 
- - Patient Admissions
-   - Create an Admission                 POST  https://aorta:443/api/patients/123456/admissions
-   - Update an Admission                 PUT   https://aorta:443/api/patients/123456/admissions/456789
+ - Task Request - Task Management Application
+   - Create a Task Request               POST   https://aorta:443/api/taskrequests
+   - Delete a Task Request               DELETE https://aorta:443/api/taskrequests/123456
+   - Update a Task Request               PUT    https://aorta:443/api/taskrequests/123456
 
- - Patient Transfers
-   - Create a Transfer                   POST  https://aorta:443/api/patients/123456/transfers
-   - Cancel a Transfer                   PUT   https://aorta:443/api/patients/123456/transfers/789123
-
- - Hospital Structure
-    - Update a Hospital Structure        PUT    https://aorta:443/api/structure
-
- - Stock
-    - Create a Stock Movement Request    POST   https://aorta:443/api/stocks
-    - Update a Stock Movement Request    PUT    https://aorta:443/api/stocks/456123
- 
- - Appointment
-   - Create an Appointment               POST   https://aorta:443/api/patients/123456/appointments
-   - Delete an Appointment               DELETE https://aorta:443/api/patients/123456/appointments/789123
-   - Update an Appointment               PUT    https://aorta:443/api/patients/123456/appointments/789123
-
- - Tasks (
+ - Tasks - Dynamic Scheduling Application
    - Create a Task                       POST   https://aorta:443/api/tasks
    - Delete a Task                       DELETE https://aorta:443/api/tasks/123456
    - Update a Task                       PUT    https://aorta:443/api/tasks/123456
 
+ - Patient Admissions - Epd Application
+   - Create an Admission                 POST  https://aorta:443/api/patients/123456/admissions
+   - Update an Admission                 PUT   https://aorta:443/api/patients/123456/admissions/456789
+
+ - Patient Transfers - Epd Application
+   - Create a Transfer                   POST  https://aorta:443/api/patients/123456/transfers
+   - Cancel a Transfer                   PUT   https://aorta:443/api/patients/123456/transfers/789123
+
+ - Hospital Structure - Epd Application
+    - Update a Hospital Structure        PUT    https://aorta:443/api/structure
+
+ - Stock - Epr Application
+    - Create a Stock Movement Request    POST   https://aorta:443/api/stocks
+    - Update a Stock Movement Request    PUT    https://aorta:443/api/stocks/456123
+ 
+ - Appointment - Epd Application
+   - Create an Appointment               POST   https://aorta:443/api/patients/123456/appointments
+   - Delete an Appointment               DELETE https://aorta:443/api/patients/123456/appointments/789123
+   - Update an Appointment               PUT    https://aorta:443/api/patients/123456/appointments/789123
+
 ## Task Requests Collection [/api/taskrequests]
+
+The collection of messages that deals with Task Requests. Task Request are used as input to create one or multiple tasks.
 
 ### Create a Task Request [POST]
 
 + Request (application/json)
 
-+ Request (application/json)
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"6419c4ff-d87e-47c5-bafd-31d5d7ed27dc",
+            "AortaOutSendTime":"20150217.234826.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"RestSourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.234826.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"860836fe-2164-4c4f-a6c6-58c930e560bc"
+        },
+        "RestSourced":
+        {
+            "MessageType": "OAZIS_HL7_ADT",
+            "Request": {
+                "CreatedTimestamp": "20160310",
+                "User": "PeJans",
+                "UserFirstName": "Peter",
+                "UserLastName": "Jans" 
+            }
+        }
 
 + Response 201 (application/json)
 
@@ -64,14 +87,32 @@ Basic list of the list of services:
 
 + Response 201 (application/json)
 
+## Tasks Collection [/api/tasks]
+
+The collection of messages that deals with Tasks. Tasks are actions that need to be performed by a person.
+
+### Create a Task [POST]
+
++ Response 201 (application/json)
+
+### Delete a Task [DELETE]
+
++ Response 201 (application/json)
+
+### Update a Task [PUT]
+
++ Response 201 (application/json)
+
 ## Patient Admissions Collection [/api/patients/123456/admissions]
 
-POST Requests
+Series of messages related to the admission and discharge of a patient.
+
+**POST Requests**
  - First request: This message creates a (resident) admission for a given patient.
  - Second request: This message creates an (ambulant) admission for a given patient.
  - Third request: This message creates a Pending Admission (in the future). Remark that this is normally followed by a Create Admission at the moment of the patient arriving at the admission desk. The Pending Admission is then converted into a true Admission.
 
-PUT Requests
+**PUT Requests**
  - First request: This message creates a Patient Discharge
  - Second request: This message creates a Pending Discharge (in the future)
  - Third request: This message cancels any Admission (remark that this is not a delete)
@@ -541,6 +582,8 @@ PUT Requests
 
 ## Patient Transfers Collection [/api/patients/123456/transfers]
 
+Series of messages related to the transfer or movements of a patient.
+
 POST Requests
  - First request: This message creates a Patient Transfer
  - Second request: This message creates a Pending Transfer (in the future)
@@ -773,10 +816,38 @@ PUT Requests
                 "AortaMessageBrokerOutputResponse": "Received"
             }
 
+## Hospital Structure Collection [/api/structure]
+
+Explains the messages that are related to the hospital structure (bed, rooms, departments) within a hospital
+
+### Update a Hospital Structure [PUT]
+
++ Response 201 (application/json)
+
 ## Stock Collection [/api/stocks]
 
-## Patient Appointments Collection [/api/appointments]
+Explains the messages that are related to stock movement requests within a hospital.
 
-## Tasks Collection [/api/tasks]
+### Create a Stock Movement [POST]
 
-ed
++ Response 201 (application/json)
+
+### Update a Stock Movement [PUT]
+
++ Response 201 (application/json)
+
+## Patient Appointments Collection [/api/patients/123456/appointments]
+
+Explains the messages that are related to appointment planning, at the moment or future appointments
+
+### Create an Appointment [POST]
+
++ Response 201 (application/json)
+
+### Delete an Appointment [DELETE]
+
++ Response 201 (application/json)
+
+### Update an Appointment [PUT]
+
++ Response 201 (application/json)
