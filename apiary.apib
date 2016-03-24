@@ -7,10 +7,10 @@ Aorta Rest is a simple API allowing tasks to be routed and medical messages to b
 
 List of services that will be called on remote applications:
 
- - Task Request - Task Management Application
-   - Create a Task Request               POST   https://aorta:443/api/taskrequests
-   - Delete a Task Request               DELETE https://aorta:443/api/taskrequests/123456
-   - Update a Task Request               PUT    https://aorta:443/api/taskrequests/123456
+ - Process Request - Task Management Application
+   - Create a Process Request               POST   https://aorta:443/api/processrequests
+   - Delete a Process Request               DELETE https://aorta:443/api/processrequests/123456
+   - Update a Process Request               PUT    https://aorta:443/api/processrequests/123456
 
  - Tasks - Dynamic Scheduling Application
    - Create a Task                       POST   https://aorta:443/api/tasks
@@ -37,11 +37,11 @@ List of services that will be called on remote applications:
    - Delete an Appointment               DELETE https://aorta:443/api/patients/123456/appointments/789123
    - Update an Appointment               PUT    https://aorta:443/api/patients/123456/appointments/789123
 
-## Task Requests Collection [/api/taskrequests]
+## Process Requests Collection [/api/taskrequests]
 
 The collection of messages that deals with Task Requests. Task Request are used as input to create one or multiple tasks.
 
-### Create a Task Request [POST]
+### Create a Process Request [POST]
 
 + Request (application/json)
 
@@ -58,20 +58,55 @@ The collection of messages that deals with Task Requests. Task Request are used 
         },
         "RestSourced":
         {
-            "MessageType": "OAZIS_HL7_ADT",
-            "Request": {
-                "CreatedTimestamp": "20160310",
-                "User": "PeJans",
-                "UserFirstName": "Peter",
-                "UserLastName": "Jans" 
+            "MessageType": "CreateProcessRequest",
+            "ProcessRequest": {
+                "Id": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
+                "CreationTime": "20160310.123456.123",
+                "Creator": {
+                    "Id": "92ee3b32-14e2-40ea-b2f2-6b4c6a08b3d3",
+                    "Type": "PatAdmin System",
+                    "FirstName": "OAZIS",
+                    "LastName": "ADT^014",
+                    "Location": {},
+                    "Roles": []
+                },
+                "StartLocation": {
+                    "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                    "Name": "ReceptionBooth1",
+                    "Description": "The blue one",
+                    "Coordinates": "x;y;z"
+                },
+                "EndLocation": {
+                    "Id": "a73b7ba2-5a11-4568-9088-5a6326115697",
+                    "Name": "Room 123",
+                    "Description": "The oval office",
+                    "Coordinates": "a;b;c"
+                },
+                "ProposedStartTime": "20150217.12345.780",
+                "ProposedStartTimeWindow": "20150217.12340.780,20150217.12350.780",
+                "ProposedEndTime": "20150217.132456.780",
+                "ProposedEndTimeWindow": "20150217.132450.780,20150217.132459.780",
+                "EffectiveStartTime": "",
+                "EffectiveEndTime": "",
+                "Tasks": [],
+                "Status": "Requested",
+                "Priority": "2 - Medium",
+                "Mode": "Enabled",
+                "Name": "Incoming patient to room",
+                "Description": "Patient from Reception to Room",
+                "Annotations": [
+                    {   "CreationTime": "20150217.133456.780",
+                        "Creator": "8d8e96ce-74c6-4dd4-94d6-15af724d6215",
+                        "Value": "To schedule via blue path" }
+                ]
             }
-        }
+        }}
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /api/taskrequests/123456
+            Location: /api/processrequests/123456
 
     + Body
     
@@ -79,11 +114,11 @@ The collection of messages that deals with Task Requests. Task Request are used 
                 "AortaMessageBrokerOutputResponse": "Received"
             }
 
-### Delete a Task Request [DELETE]
+### Delete a Process Request [DELETE]
 
 + Response 201 (application/json)
 
-### Update a Task Request [PUT]
+### Update a Process Request [PUT]
 
 + Response 201 (application/json)
 
@@ -93,7 +128,208 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
 
 ### Create a Task [POST]
 
++ Request (application/json)
+
+        {"AortaMessageBrokerOutput":
+        {
+            "AortaOutMessageID":"6419c4ff-d87e-47c5-bafd-31d5d7ed27dc",
+            "AortaOutSendTime":"20150217.123456.780",
+            "AortaOutMessageVersion":"1.0.0.1",
+            "AortaOutMessageType":"RestSourced",
+            "AortaRoutingVersion":"1.0.0.1",
+            "AortaRoutingReadyTime":"20150217.123456.560",
+            "AortaRoutingInfo": {},
+            "AortaInMessageID":"860836fe-2164-4c4f-a6c6-58c930e560bc"
+        },
+        "RestSourced":
+        {
+            "MessageType": "CreateTask",
+            "Task": {
+                "Id": "a6baa2d8-03c8-4743-8f9a-ba633ba0d0e6",
+                "CreationTime": "20160310",
+                "Creator": "92ee3b32-14e2-40ea-b2f2-6b4c6a08b3d3",
+                "Type": "PatientTransport",
+                "Status": "Requested",
+                "Priority": "2 - Medium",
+                "Mode": "Enabled",
+                "Name": "Incoming patient to room",
+                "Description": "Pick up patient at Reception",
+                "Annotations": [
+                    {   "CreationTime": "20150217.133456.780",
+                        "Creator": "8d8e96ce-74c6-4dd4-94d6-15af724d6215",
+                        "Value": "Scheduled via blue pathway" }
+                ],
+                "Subject": {
+                    "Id": "52a39c42-3e69-4940-a348-49bd93790eda",
+                    "FirstName": "Peter",
+                    "LastName": "Jans",
+                    "IdentificationMethods": [
+                        {   "IdentificationMethod": "Wearable" },
+                        {   "IdentificationMethod": "DECT" }
+                    ],
+                    "Location": {
+                        "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                        "Name": "ReceptionBooth1",
+                        "Description": "The blue one",
+                        "Coordinates": "x;y;z"
+                    },
+                    "Roles": [
+                        {   "Role": "ManOfManyTrades" },
+                        {   "Role": "Hospic" }
+                    ],
+                    "Devices": [
+                        {   "Device": "Wearable",
+                            "Type": "A5" },
+                        {   "Device": "DECT",
+                            "Type": "Siemens" }
+                    ],
+                    "Competences": [
+                        {   "Competence": "CarryAbility",
+                            "Type": "Transport",
+                            "Limit": "10 kg" },
+                        {   "Competence": "French",
+                            "Type": "Language",
+                            "Level": "Good" }
+                    ]
+                },
+                "StartLocation": {
+                    "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                    "Name": "ReceptionBooth1",
+                    "Description": "The blue one",
+                    "Coordinates": "x;y;z"
+                },
+                "EndLocation": {
+                    "Id": "a73b7ba2-5a11-4568-9088-5a6326115697",
+                    "Name": "Room 123",
+                    "Description": "The oval office",
+                    "Coordinates": "a;b;c"
+                },
+                "ResposeDeadline": "20150217.234826.780",
+                "Preconditions": [],
+                "Actions": [
+                    {   "Id": "0ca435c7-ad1b-44fd-8f34-a1aa174fd888",
+                        "ActionType": "Pickup",
+                        "Subject": {
+                            "Id": "52a39c42-3e69-4940-a348-49bd93790eda",
+                            "FirstName": "Peter",
+                            "LastName": "Jans",
+                            "IdentificationMethods": [
+                                {   "IdentificationMethod": "Wearable" },
+                                {   "IdentificationMethod": "DECT" }
+                            ],
+                            "Location": {
+                                "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                                "Name": "ReceptionBooth1",
+                                "Description": "The blue one",
+                                "Coordinates": "x;y;z"
+                            },
+                            "Roles": [
+                                {   "Role": "ManOfManyTrades" },
+                                {   "Role": "Hospic" }
+                            ],
+                            "Devices": [
+                                {   "Device": "Wearable",
+                                    "Type": "A5" },
+                                {   "Device": "DECT",
+                                    "Type": "Siemens" }
+                            ],
+                            "Competences": [
+                                {   "Competence": "CarryAbility",
+                                    "Type": "Transport",
+                                    "Limit": "10 kg" },
+                                {   "Competence": "French",
+                                    "Type": "Language",
+                                    "Level": "Good" }
+                            ]
+                        },
+                        "StartLocation": {
+                            "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                            "Name": "RestRoom1",
+                            "Description": "The old one",
+                            "Coordinates": "x;y;z"
+                        },
+                        "EndLocation": {
+                            "Id": "a73b7ba2-5a11-4568-9088-5a6326115697",
+                            "Name": "ReceptionBooth7",
+                            "Description": "The blue one",
+                            "Coordinates": "a;b;c"
+                        },                        "": "",
+                        "EffectiveStartTime": "",
+                        "EffectiveEndTime": "",
+                        "Preconditions": [],
+                        "Status": "Requested",
+                        "Priority": "2 - Medium",
+                        "Description": "Pick up patient at Reception"
+                    },
+                    {   "Id": "177114d8-a8eb-48e5-9d38-fe7cdf945d8f",
+                        "ActionType": "Delivery",
+                        "Subject": {
+                            "Id": "52a39c42-3e69-4940-a348-49bd93790eda",
+                            "FirstName": "Peter",
+                            "LastName": "Jans",
+                            "IdentificationMethods": [
+                                {   "IdentificationMethod": "Wearable" },
+                                {   "IdentificationMethod": "DECT" }
+                            ],
+                            "Location": {
+                                "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                                "Name": "ReceptionBooth1",
+                                "Description": "The blue one",
+                                "Coordinates": "x;y;z"
+                            },
+                            "Roles": [
+                                {   "Role": "ManOfManyTrades" },
+                                {   "Role": "Hospic" }
+                            ],
+                            "Devices": [
+                                {   "Device": "Wearable",
+                                    "Type": "A5" },
+                                {   "Device": "DECT",
+                                    "Type": "Siemens" }
+                            ],
+                            "Competences": [
+                                {   "Competence": "CarryAbility",
+                                    "Type": "Transport",
+                                    "Limit": "10 kg" },
+                                {   "Competence": "French",
+                                    "Type": "Language",
+                                    "Level": "Good" }
+                            ]
+                        },
+                        "StartLocation": {
+                            "Id": "a73b7ba2-5a11-4568-9088-5a6326115697",
+                            "Name": "ReceptionBooth7",
+                            "Description": "The blue one",
+                            "Coordinates": "a;b;c"
+                        },
+                        "EndLocation": {
+                            "Id": "1be31714-b995-4dfe-80a0-3eede25c5d10",
+                            "Name": "Room 123",
+                            "Description": "The oval office",
+                            "Coordinates": "a;b;c"
+                        },                        "": "",
+                        "EffectiveStartTime": "",
+                        "EffectiveEndTime": "",
+                        "Preconditions": [],
+                        "Status": "Requested",
+                        "Priority": "2 - Medium",
+                        "Description": "Deliver a patient to his room"
+                    }
+                ]
+            }
+        }}
+
 + Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/tasks/123456
+
+    + Body
+    
+            {
+                "AortaMessageBrokerOutputResponse": "Received"
+            }
 
 ### Delete a Task [DELETE]
 
