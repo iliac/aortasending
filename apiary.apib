@@ -37,9 +37,24 @@ List of services that will be called on remote applications:
    - Delete an Appointment               DELETE http://aorta:443/api/patients/123456/appointments/789123
    - Update an Appointment               PUT    http://aorta:443/api/patients/123456/appointments/789123
 
-## Process Requests Collection [/api/taskrequests]
+## Process Requests Collection [/api/processrequests]
 
-The collection of messages that deals with Task Requests. Task Request are used as input to create one or multiple tasks.
+The collection of messages that deals with Process Requests.
+Process Requests are used as input to create one or multiple tasks.
+
+**POST requests**
+ - First POST request: This message creates a process request.
+
+**POST responses**
+ - First POST response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second POST response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other POST responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
+
+**DELETE requests**
+ - First DELETE request: This message deletes a process request.
+
+**PUT requests**
+ - First PUT request: This message updates a process request.
 
 ### Create a Process Request [POST]
 
@@ -64,11 +79,27 @@ The collection of messages that deals with Task Requests. Task Request are used 
                 "CreationTime": "20160310.123456.123",
                 "Creator": {
                     "Id": "92ee3b32-14e2-40ea-b2f2-6b4c6a08b3d3",
-                    "Type": "PatAdmin System",
+                    "Type": "System",
                     "FirstName": "OAZIS",
-                    "LastName": "ADT^014",
-                    "Location": {},
-                    "Roles": []
+                    "LastName": "ADT^014"
+                },
+                "Objects": {
+                    "Id": "52a39c42-3e69-4940-a348-49bd93790eda",
+                    "FirstName": "Pieter",
+                    "LastName": "Pieters",
+                    "IdentificationMethods": [
+                        {   "IdentificationMethod": "Wristband" },
+                        {   "IdentificationMethod": "Username" }
+                    ],
+                    "Location": {
+                        "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                        "Name": "ReceptionBooth1",
+                        "Description": "The blue one",
+                        "Coordinates": "x;y;z"
+                    },
+                    "Roles": [
+                        {   "Role": "Patient" }
+                    ]
                 },
                 "StartLocation": {
                     "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
@@ -83,17 +114,20 @@ The collection of messages that deals with Task Requests. Task Request are used 
                     "Coordinates": "a;b;c"
                 },
                 "ProposedStartTime": "20150217.12345.780",
-                "ProposedStartTimeWindow": "20150217.12340.780,20150217.12350.780",
+                "ProposedStartTimeWindow": {
+                    "TimeWindowStart": "20150217.12340.780",
+                    "TimeWindowEnd": "20150217.12350.780"
+                },
                 "ProposedEndTime": "20150217.132456.780",
-                "ProposedEndTimeWindow": "20150217.132450.780,20150217.132459.780",
-                "EffectiveStartTime": "",
-                "EffectiveEndTime": "",
-                "Tasks": [],
+                "ProposedEndTimeWindow": {
+                    "TimeWindowStart": "20150217.132000.780",
+                    "TimeWindowEnd": "20150217.133000.780"
+                },
                 "Status": "Requested",
-                "Priority": "2 - Medium",
+                "Priority": "Normal",
+                "Description": "Aanvraag voor transport op dinsdag, 17-feb-2015 rond 12:34 van patient Pieter Pieters van ontvangstbalie 1 naar kamer 123",
                 "Mode": "Enabled",
-                "Name": "Incoming patient to room",
-                "Description": "Patient from Reception to Room",
+                "DisplayName": "Incoming patient to room",
                 "Annotations": [
                     {   "CreationTime": "20150217.133456.780",
                         "Creator": "8d8e96ce-74c6-4dd4-94d6-15af724d6215",
@@ -102,7 +136,13 @@ The collection of messages that deals with Task Requests. Task Request are used 
             }
         }}
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /api/processrequests/123456
+
++ Response 400 (application/json)
 
     + Headers
 
@@ -111,7 +151,7 @@ The collection of messages that deals with Task Requests. Task Request are used 
     + Body
     
             {
-                "AortaMessageBrokerOutputResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Rejected"
             }
 
 ### Delete a Process Request [DELETE]
@@ -125,6 +165,20 @@ The collection of messages that deals with Task Requests. Task Request are used 
 ## Tasks Collection [/api/tasks]
 
 The collection of messages that deals with Tasks. Tasks are actions that need to be performed by a person.
+
+**POST requests**
+ - First POST request: This message creates a task.
+
+**POST responses**
+ - First POST response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second POST response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other POST responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
+
+**DELETE requests**
+ - First DELETE request: This message deletes a task.
+
+**PUT requests**
+ - First PUT request: This message updates a task.
 
 ### Create a Task [POST]
 
@@ -146,24 +200,18 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
             "MessageType": "CreateTask",
             "Task": {
                 "Id": "a6baa2d8-03c8-4743-8f9a-ba633ba0d0e6",
-                "ProcessrequestId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
+                "ProcessRequestId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
                 "CreationTime": "20160310",
-                "Creator": "92ee3b32-14e2-40ea-b2f2-6b4c6a08b3d3",
-                "Type": "PatientTransport",
-                "Status": "Requested",
-                "Priority": "2 - Medium",
-                "Mode": "Enabled",
-                "Name": "Incoming patient to room",
-                "Description": "Pick up patient at Reception",
-                "Annotations": [
-                    {   "CreationTime": "20150217.133456.780",
-                        "Creator": "8d8e96ce-74c6-4dd4-94d6-15af724d6215",
-                        "Value": "Scheduled via blue pathway" }
-                ],
-                "Subject": {
+                "Creator": {
+                    "Id": "92ee3b32-14e2-40ea-b2f2-6b4c6a08b3d3",
+                    "Type": "System",
+                    "FirstName": "Scheduling Application",
+                    "LastName": ""
+                },
+               "Subject": {
                     "Id": "52a39c42-3e69-4940-a348-49bd93790eda",
-                    "FirstName": "Peter",
-                    "LastName": "Jans",
+                    "FirstName": "Jan",
+                    "LastName": "Janssens",
                     "IdentificationMethods": [
                         {   "IdentificationMethod": "Wearable" },
                         {   "IdentificationMethod": "DECT" }
@@ -175,8 +223,7 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         "Coordinates": "x;y;z"
                     },
                     "Roles": [
-                        {   "Role": "ManOfManyTrades" },
-                        {   "Role": "Hospic" }
+                        {   "Role": "Nurse" }
                     ],
                     "Devices": [
                         {   "Device": "Wearable",
@@ -193,6 +240,8 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                             "Level": "Good" }
                     ]
                 },
+                "TaskType": "PatientTransport",
+                "Objects": [],
                 "StartLocation": {
                     "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
                     "Name": "ReceptionBooth1",
@@ -205,7 +254,7 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                     "Description": "The oval office",
                     "Coordinates": "a;b;c"
                 },
-                "ResposeDeadline": "20150217.234826.780",
+                "ResponseDeadline": "20150217.234826.780",
                 "Preconditions": [],
                 "Actions": [
                     {   "Id": "0ca435c7-ad1b-44fd-8f34-a1aa174fd888",
@@ -259,7 +308,7 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         "EffectiveEndTime": "",
                         "Preconditions": [],
                         "Status": "Requested",
-                        "Priority": "2 - Medium",
+                        "Priority": "Normal",
                         "Description": "Pick up patient at Reception"
                     },
                     {   "Id": "177114d8-a8eb-48e5-9d38-fe7cdf945d8f",
@@ -313,14 +362,30 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         "EffectiveEndTime": "",
                         "Preconditions": [],
                         "Status": "Requested",
-                        "Priority": "2 - Medium",
+                        "Priority": "Normal",
                         "Description": "Deliver a patient to his room"
                     }
+                ],
+                "Status": "Requested",
+                "Priority": "Normal",
+                "Description": "Pick up patient at Reception",
+                "Mode": "Enabled",
+                "DisplayName": "Incoming patient to room",
+                "Annotations": [
+                    {   "CreationTime": "20150217.133456.780",
+                        "Creator": "8d8e96ce-74c6-4dd4-94d6-15af724d6215",
+                        "Value": "Scheduled via blue pathway" }
                 ]
-            }
+             }
         }}
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /api/tasks/123456
+
++ Response 400 (application/json)
 
     + Headers
 
@@ -329,7 +394,7 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
     + Body
     
             {
-                "AortaMessageBrokerOutputResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Rejected"
             }
 
 ### Delete a Task [DELETE]
@@ -345,18 +410,28 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
 Series of messages related to the admission and discharge of a patient.
 
 **POST Requests**
- - First request: This message creates a (resident) admission for a given patient.
- - Second request: This message creates an (ambulant) admission for a given patient.
- - Third request: This message creates a Pending Admission (in the future). Remark that this is normally followed by a Create Admission at the moment of the patient arriving at the admission desk. The Pending Admission is then converted into a true Admission.
+ - First POST request: This message creates a (resident) admission for a given patient.
+ - Second POST request: This message creates an (ambulant) admission for a given patient.
+ - Third POST request: This message creates a Pending Admission (in the future). Remark that this is normally followed by a Create Admission at the moment of the patient arriving at the admission desk. The Pending Admission is then converted into a true Admission.
+
+**POST responses**
+ - First POST response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second POST response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other POST responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
 
 **PUT Requests**
- - First request: This message creates a Patient Discharge
- - Second request: This message creates a Pending Discharge (in the future)
- - Third request: This message cancels any Admission (remark that this is not a delete)
- - Fourth request: This message cancels a Pending Admission (in the future)
- - Fifth request: This message cancels a Patient Discharge
- - Sixth request: This message cancels a Pending Discharge (in the future)
- - Seventh request: This message updates Patient Information
+ - First PUT request: This message creates a Patient Discharge
+ - Second PUT request: This message creates a Pending Discharge (in the future)
+ - Third PUT request: This message cancels any Admission (remark that this is not a delete)
+ - Fourth PUT request: This message cancels a Pending Admission (in the future)
+ - Fifth PUT request: This message cancels a Patient Discharge
+ - Sixth PUT request: This message cancels a Pending Discharge (in the future)
+ - Seventh PUT request: This message updates Patient Information
+
+**PUT responses**
+ - First PUT response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second PUT response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other PUT responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
 
 ### Create a Patient Admission [POST]
 
@@ -490,7 +565,13 @@ Series of messages related to the admission and discharge of a patient.
             "AmbulatoryStatus": ""
         }}
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /api/patients/123456/admissions/456789
+
++ Response 400 (application/json)
 
     + Headers
 
@@ -499,7 +580,7 @@ Series of messages related to the admission and discharge of a patient.
     + Body
     
             {
-                "AortaMessageBrokerOutputResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Rejected"
             }
 
 ### Update a patient admission [PUT]
@@ -805,7 +886,13 @@ Series of messages related to the admission and discharge of a patient.
             "AmbulatoryStatus": ""
         }}
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /api/patients/123456/admissions/456789
+
++ Response 400 (application/json)
 
     + Headers
 
@@ -814,20 +901,30 @@ Series of messages related to the admission and discharge of a patient.
     + Body
     
             {
-                "AortaMessageBrokerOutputResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Rejected"
             }
 
 ## Patient Transfers Collection [/api/patients/123456/transfers]
 
 Series of messages related to the transfer or movements of a patient.
 
-POST Requests
- - First request: This message creates a Patient Transfer
- - Second request: This message creates a Pending Transfer (in the future)
+**POST Requests**
+ - First POST request: This message creates a Patient Transfer
+ - Second POST request: This message creates a Pending Transfer (in the future)
 
-PUT Requests
- - First request: This message cancels a Patient Transfer
- - Second request: This message creates a Pending Transfer (in the future)
+**POST responses**
+ - First POST response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second POST response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other POST responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
+
+**PUT Requests**
+ - First PUT request: This message cancels a Patient Transfer
+ - Second PUT request: This message creates a Pending Transfer (in the future)
+
+**PUT responses**
+ - First PUT response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second PUT response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other PUT responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
 
 ### Create a Patient Transfer [POST]
 
@@ -929,16 +1026,22 @@ PUT Requests
             "AmbulatoryStatus": ""
         }}
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
     + Headers
 
-            Location: /api/patients/123456/transfers/456789
+            Location: /api/patients/123456/admissions/456789
+
++ Response 400 (application/json)
+
+    + Headers
+
+            Location: /api/patients/123456/admissions/456789
 
     + Body
     
             {
-                "AortaMessageBrokerOutputResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Rejected"
             }
 
 ### Update a Patient Transfer [PUT]
@@ -1041,16 +1144,22 @@ PUT Requests
             "AmbulatoryStatus": ""
         }}
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
     + Headers
 
-            Location: /api/patients/123456/transfers/456789
+            Location: /api/patients/123456/admissions/456789
+
++ Response 400 (application/json)
+
+    + Headers
+
+            Location: /api/patients/123456/admissions/456789
 
     + Body
     
             {
-                "AortaMessageBrokerOutputResponse": "Received"
+                "AortaMessageBrokerOutputResponse": "Rejected"
             }
 
 ## Hospital Structure Collection [/api/structure]
