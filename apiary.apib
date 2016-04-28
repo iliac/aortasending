@@ -60,18 +60,6 @@ Process Requests are used as input to create one or multiple tasks.
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"6419c4ff-d87e-47c5-bafd-31d5d7ed27dc",
-            "AortaOutSendTime":"20150217.234826.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"RestSourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.234826.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"860836fe-2164-4c4f-a6c6-58c930e560bc"
-        },
-        "RestSourced":
         {
             "MessageType": "CreateProcessRequest",
             "ProcessRequest": {
@@ -134,7 +122,7 @@ Process Requests are used as input to create one or multiple tasks.
                         "Value": "To schedule via blue path" }
                 ]
             }
-        }}
+        }
 
 + Response 200 (application/json)
 
@@ -184,18 +172,6 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"6419c4ff-d87e-47c5-bafd-31d5d7ed27dc",
-            "AortaOutSendTime":"20150217.123456.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"RestSourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.123456.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"860836fe-2164-4c4f-a6c6-58c930e560bc"
-        },
-        "RestSourced":
         {
             "MessageType": "CreateTask",
             "Task": {
@@ -377,7 +353,7 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         "Value": "Scheduled via blue pathway" }
                 ]
              }
-        }}
+        }
 
 + Response 200 (application/json)
 
@@ -437,18 +413,6 @@ Series of messages related to the admission and discharge of a patient.
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"6419c4ff-d87e-47c5-bafd-31d5d7ed27dc",
-            "AortaOutSendTime":"20150217.234826.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.234826.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"860836fe-2164-4c4f-a6c6-58c930e560bc"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PatientResidentAdmit",
@@ -476,23 +440,11 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "01B"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOut":
-        {
-            "AortaOutMessageID":"285e708f-a418-4f2a-8df9-eab236d653eb",
-            "AortaOutSendTime":"20150217.234717.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.234717.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"2f12d80d-ceff-426f-9d2c-6d388670f5b2"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PatientAmbulantAdmit",
@@ -520,22 +472,10 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "05"
             },
             "AmbulatoryStatus": ""
-        }}
-        
+        }
+
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"285e708f-a418-4f2a-8df9-eab236d653eb",
-            "AortaOutSendTime":"20160223.122231.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20160223.122231.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"2f12d80d-ceff-426f-9d2c-6d388670f5b2"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PendingAdmit",
@@ -563,7 +503,7 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "01"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Response 200 (application/json)
 
@@ -587,18 +527,6 @@ Series of messages related to the admission and discharge of a patient.
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"cffa6f0b-5b13-4f87-a2cd-3b1f02fd3d42",
-            "AortaOutSendTime":"20150217.194706.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.194706.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"ab0f9107-af0b-417e-9aad-14b740845b66"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PatientDischarge",
@@ -626,22 +554,10 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "03"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"cdb48005-4ad3-4bb7-aeb6-a6c144619743",
-            "AortaOutSendTime":"20160223.161249.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20160223.161249.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"e22d9e54-df33-4894-849c-4850585ba66a"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PendingDischarge",
@@ -669,22 +585,10 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "28"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"d7ddcc70-2410-44b1-b88c-eacae5ebf2ce",
-            "AortaOutSendTime":"20150217.172900.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.172900.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"7fb385e4-7079-43fc-b40e-78947f8c24c3"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPatientAdmit",
@@ -712,22 +616,10 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "397"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"17ad0f2f-f1bf-447d-a893-d72f4071e6a2",
-            "AortaOutSendTime":"20160223.133352.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20160223.133352.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"ffe27f0d-9871-4e3b-88e7-d475d7ab6a59"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPendingAdmit",
@@ -755,22 +647,10 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "01"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"ad2b7ec3-60f2-48eb-aa5a-9b9dd178c998",
-            "AortaOutSendTime":"20150217.143714.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.143714.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"a2a4f57b-253a-4746-8e22-525bb9312663"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPatientDischarge",
@@ -798,22 +678,10 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "01"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"9848df77-8dd8-4cf3-b308-1adab1904a55",
-            "AortaOutSendTime":"20160223.150628.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20160223.150628.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"ead49c92-2efb-4ce2-b224-6aaebd332c44"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPendingDischarge",
@@ -841,22 +709,10 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "01"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"e43b7b42-194e-4cab-938e-7542a957824d",
-            "AortaOutSendTime":"20150217.141407.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.141407.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"492dd920-1ca3-433a-aa62-e332c37566b8"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "UpdatePatientInfo",
@@ -884,7 +740,7 @@ Series of messages related to the admission and discharge of a patient.
                 "Bed": "22"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Response 200 (application/json)
 
@@ -930,18 +786,6 @@ Series of messages related to the transfer or movements of a patient.
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"3bbbca28-0d25-4350-a3e9-36b103686487",
-            "AortaOutSendTime":"20150217.172456.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.172456.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"e01a313c-7544-4d79-b69a-92dfe213e2fc"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PatientTransfer",
@@ -975,22 +819,10 @@ Series of messages related to the transfer or movements of a patient.
                 "Bed": "02"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"8d9c0741-682e-41cf-aa0a-f755164e8992",
-            "AortaOutSendTime":"20160223.140451.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20160223.140451.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"ee43cc4b-7836-4bde-890e-8ff7b1e0a5ac"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "PendingTransfer",
@@ -1024,7 +856,7 @@ Series of messages related to the transfer or movements of a patient.
                 "Bed": "01"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Response 200 (application/json)
 
@@ -1048,18 +880,6 @@ Series of messages related to the transfer or movements of a patient.
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"55fa2be1-8b5d-4779-a89a-cde7652d025a",
-            "AortaOutSendTime":"20150217.171546.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20150217.171546.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"bcbdb9b3-d5f9-4b08-8e1a-9a5aaf26cc16"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPatientTransfer",
@@ -1093,22 +913,10 @@ Series of messages related to the transfer or movements of a patient.
                 "Bed": "02"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Request (application/json)
 
-        {"AortaMessageBrokerOutput":
-        {
-            "AortaOutMessageID":"6c0709d1-9280-45ad-9c92-83881a85c900",
-            "AortaOutSendTime":"20160223.150628.780",
-            "AortaOutMessageVersion":"1.0.0.1",
-            "AortaOutMessageType":"HL7Sourced",
-            "AortaRoutingVersion":"1.0.0.1",
-            "AortaRoutingReadyTime":"20160223.150628.560",
-            "AortaRoutingInfo": {},
-            "AortaInMessageID":"ad8bf26c-e87d-4073-b701-8ef2fd30993e"
-        },
-        "HL7Sourced":
         {
             "MessageType": "OAZIS_HL7_ADT",
             "MessageDetail": "CancelPendingTransfer",
@@ -1142,7 +950,7 @@ Series of messages related to the transfer or movements of a patient.
                 "Bed": "01"
             },
             "AmbulatoryStatus": ""
-        }}
+        }
 
 + Response 200 (application/json)
 
