@@ -297,6 +297,18 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         "name": "ReceptionBooth1",
                         "coordinates": "x;y;z"
                     },
+                    "transportOptions": {
+                        "carrier": [{
+                            "key": "bed"
+                        }],
+                        "warning": [{
+                                "key": "gloves",
+                                "text": "Voorzorgsmaatregelen: handschoenen"
+                            }, {
+                                "key": "O2",
+                                "text": "niet vergeten: O2"
+                        }]
+                    },
                     "roles": ["Nurse"],
                     "devices": [{
                         "deviceId": "a0d56ed4-b6f5-4059-8385-939ea26b0f96",
@@ -321,6 +333,10 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         "description": "The blue one",
                         "name": "ReceptionBooth1",
                         "coordinates": "x;y;z"
+                    },
+                    "transportOptions": {
+                        "carrier": [].
+                        "warning": []
                     },
                     "itemType": "Wheelchair",
                     "identificationMethods": ["NFC", "QR"]
