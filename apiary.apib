@@ -173,7 +173,7 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         }] 
                 "firstName": "Jan",
                 "lastName": "Janssens",
-                "birthDate": "25/05/2016",
+                "birthDate": "2016-05-25T00:00:00.000Z",
                 "location": {
                     "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
                     "description": "The blue one",
@@ -203,10 +203,14 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
             "taskType": "PatientTransport",
             "personObjects": [{
                 "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
-                "identificationMethods": ["NFC", "QR"],
+                "identificationMethods": [{
+                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                        "type": "NFC",
+                        "value":"1234"
+                        }],
                 "firstName": "Person",
                 "lastName": "1",
-                "birthDate": "25/05/2016",
+                "birthDate": "2016-05-25T00:00:00.000Z",
                 "location": {
                     "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
                     "description": "The blue one",
@@ -307,7 +311,11 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                 "actionType": "Pickup",
                 "personObjects": [{
                     "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
-                    "identificationMethods": ["NFC", "QR"],
+                    "identificationMethods": [{
+                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                        "type": "NFC",
+                        "value":"1234"
+                        }],
                     "firstName": "Person",
                     "lastName": "1",
                     "birthDate": "25/05/2016",
