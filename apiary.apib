@@ -61,65 +61,46 @@ Process Requests are used as input to create one or multiple tasks.
 + Request (application/json)
 
         {
-            "ProcessRequest": {
-                "Id": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
-                "CreationTime": "20160310.123456.123",
-                "Creator": {
-                    "Id": "92ee3b32-14e2-40ea-b2f2-6b4c6a08b3d3",
-                    "Type": "System",
-                    "FirstName": "OAZIS",
-                    "LastName": "ADT^014"
-                },
-                "Objects": {
-                    "Id": "52a39c42-3e69-4940-a348-49bd93790eda",
-                    "FirstName": "Pieter",
-                    "LastName": "Pieters",
-                    "IdentificationMethods": [
-                        {   "IdentificationMethod": "Wristband" },
-                        {   "IdentificationMethod": "Username" }
-                    ],
-                    "Location": {
-                        "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                        "Name": "ReceptionBooth1",
-                        "Description": "The blue one",
-                        "Coordinates": "x;y;z"
-                    },
-                    "Roles": [
-                        {   "Role": "Patient" }
-                    ]
-                },
-                "StartLocation": {
-                    "Id": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                    "Name": "ReceptionBooth1",
-                    "Description": "The blue one",
-                    "Coordinates": "x;y;z"
-                },
-                "EndLocation": {
-                    "Id": "a73b7ba2-5a11-4568-9088-5a6326115697",
-                    "Name": "Room 123",
-                    "Description": "The oval office",
-                    "Coordinates": "a;b;c"
-                },
-                "ProposedStartTime": "20150217.12345.780",
-                "ProposedStartTimeWindow": {
-                    "TimeWindowStart": "20150217.12340.780",
-                    "TimeWindowEnd": "20150217.12350.780"
-                },
-                "ProposedEndTime": "20150217.132456.780",
-                "ProposedEndTimeWindow": {
-                    "TimeWindowStart": "20150217.132000.780",
-                    "TimeWindowEnd": "20150217.133000.780"
-                },
-                "Status": "Requested",
-                "Priority": "Normal",
-                "Description": "Aanvraag voor transport op dinsdag, 17-feb-2015 rond 12:34 van patient Pieter Pieters van ontvangstbalie 1 naar kamer 123",
-                "Mode": "Enabled",
-                "DisplayName": "Incoming patient to room",
-                "Annotations": [
-                    {   "CreationTime": "20150217.133456.780",
-                        "Creator": "8d8e96ce-74c6-4dd4-94d6-15af724d6215",
-                        "Value": "To schedule via blue path" }
-                ]
+            "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
+            "creationTime": "2016-03-10T12:34:56.123CEST",
+            "creator": "Task Manager",
+            "state": "Requested",
+            "priority": "Normal",
+            "taskMode": "Afroep",
+            "taskType": "PatientTransport",
+            "transportMode": "Rolstoel",
+            "transportType": "Heen",
+            "processLink": [{
+               "nextProcessId": "7278b5d1-afb8-4f4b-8141-615dd283c5d4"
+            }],
+            "personObjects": [{
+               "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
+               "identificationMethods": [
+                  { "identificationMethod": "OazisPatientId", "identificationKey": "12345678" }
+               ],
+               "firstName": "Goedele",
+               "lastName": "Bruynooghe",
+               "birthDate": "25/05/1961",
+               "location": {
+                  "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                  "name": "Room 2A 243"
+               },
+               "roles": ["Patient"]
+           }],
+            "proposedArrivalTime": "2016-03-11T13:30CEST",
+            "proposedArrivalTimeWindow": {
+               "timeWindowStart": "2016-03-11T13:30CEST",
+               "timeWindowEnd": "2016-03-11T13:50CEST"
+            },
+            "expectedDuration": "PTM50",
+            "startLocation": {
+               "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+               "name": "Room 2A 243"
+            },
+            "endLocation": {
+               "locationId": "bdaafaf8-d5d1-45ef-9bbc-5e425b09b262",
+               "name": "Room xxxx",
+               "description": "Wachtruimte NKO"
             }
         }
 
@@ -127,13 +108,89 @@ Process Requests are used as input to create one or multiple tasks.
 
 + Response 400 (application/json)
 
+    + Body
+    
+            {
+                "AortaMessageBrokerOutputResponse": "Rejected"
+            }
+
++ Response 200 (application/json)
+
++ Response 400 (application/json)
+
 ### Delete a Process Request [DELETE]
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
+
++ Response 400 (application/json)
+
+    + Body
+        
+            {
+                "AortaMessageBrokerOutputResponse": "Rejected"
+            }
 
 ### Update a Process Request [PUT]
 
-+ Response 201 (application/json)
++ Request (application/json)
+
+        {
+            "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
+            "creationTime": "2016-03-10T12:34:56.123CEST",
+            "creator": "Task Manager",
+            "state": "Requested",
+            "priority": "Normal",
+            "taskMode": "Afroep",
+            "taskType": "PatientTransport",
+            "transportMode": "Rolstoel",
+            "transportType": "Heen",
+            "processLink": [{
+               "nextProcessId": "7278b5d1-afb8-4f4b-8141-615dd283c5d4"
+            }],
+           "personObjects": [{
+               "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
+               "identificationMethods": [
+                  { "identificationMethod": "OazisPatientId", "identificationKey": "12345678" }
+               ],
+               "firstName": "Goedele",
+               "lastName": "Bruynooghe",
+               "birthDate": "25/05/1961",
+               "location": {
+                  "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                  "name": "Room 2A 243"
+               },
+               "roles": ["Patient"]
+           }],
+            "proposedArrivalTime": "2016-03-11T13:30CEST",
+            "proposedArrivalTimeWindow": {
+               "timeWindowStart": "2016-03-11T13:30CEST",
+               "timeWindowEnd": "2016-03-11T13:50CEST"
+            },
+            "expectedDuration": "00:50",
+           "startLocation": {
+               "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+               "name": "Room 2A 243"
+            },
+           "endLocation": {
+               "locationId": "bdaafaf8-d5d1-45ef-9bbc-5e425b09b262",
+               "name": "Room xxxx",
+               "description": "Wachtruimte NKO"
+            },
+            "tasks": [{
+               "taskId": "76f8f381-4dd6-4e1d-a591-8a4d49ac0bce",
+               "etcetera": "etc"
+            }]
+        }
+
++ Response 200 (application/json)
+
++ Response 400 (application/json)
+
+    + Body
+    
+            {
+                "AortaMessageBrokerOutputResponse": "Rejected"
+            }
 
 ## Tasks Collection [/api/tasks/:taskId]
 
@@ -405,9 +462,16 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
             "state": "Busy",
             "priority": "Normal"
         }
+
 + Response 200 (application/json)
 
 + Response 400 (application/json)
+
+    + Body
+    
+            {
+                "AortaMessageBrokerOutputResponse": "Rejected"
+            }
 
 ### Delete a Task [DELETE]
 
