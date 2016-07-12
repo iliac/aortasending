@@ -60,49 +60,232 @@ Process Requests are used as input to create one or multiple tasks.
 
 + Request (application/json)
 
-        {
-            "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
-            "creationTime": "2016-03-10T12:34:56.123CEST",
-            "creator": "Task Manager",
-            "state": "Requested",
-            "priority": "Normal",
-            "taskMode": "Afroep",
-            "taskType": "PatientTransport",
-            "transportMode": "Rolstoel",
-            "transportType": "Heen",
-            "processLink": [{
-               "nextProcessId": "7278b5d1-afb8-4f4b-8141-615dd283c5d4"
-            }],
-            "personObjects": [{
-               "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
-               "identificationMethods": [
-                  { "identificationMethod": "OazisPatientId", "identificationKey": "12345678" }
-               ],
-               "firstName": "Goedele",
-               "lastName": "Bruynooghe",
-               "birthDate": "25/05/1961",
-               "location": {
-                  "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                  "name": "Room 2A 243"
-               },
-               "roles": ["Patient"]
-           }],
-            "proposedArrivalTime": "2016-03-11T13:30CEST",
-            "proposedArrivalTimeWindow": {
-               "timeWindowStart": "2016-03-11T13:30CEST",
-               "timeWindowEnd": "2016-03-11T13:50CEST"
-            },
-            "expectedDuration": "PTM50",
-            "startLocation": {
-               "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-               "name": "Room 2A 243"
-            },
-            "endLocation": {
-               "locationId": "bdaafaf8-d5d1-45ef-9bbc-5e425b09b262",
-               "name": "Room xxxx",
-               "description": "Wachtruimte NKO"
+    + Body
+    
+            {
+                "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
+                "type": "ProcessRequest",
+                "description": "Pick up Patient X",
+                "taskState": "Requested",
+                "creationTime": "2016-03-10T12:34:56.123Z",
+                "creator": "Task Manager",
+                "taskType": "PatientTransport",
+                "priority": "Normal",
+                "transportMode": "Rolstoel",
+                "transportType": "Terug",
+                "processLinks": [{
+                    "nextProcessId": "7278b5d1-afb8-4f4b-8141-615dd283c5d4"
+                }],
+                "personObjects": [{
+                    "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
+                    "identificationMethods": [
+                        { "identificationMethod": "OazisPatientId", "identificationKey": "12345678" },
+                        { "identificationMethod": "NFC", "identificationKey": "fabdfa2b-16e8-455b-8b60-6b2ea5bffbde" }
+                    ],
+                    "firstName": "Goedele",
+                    "lastName": "Bruynooghe",
+                    "birthDate": "1961-05-21",
+                    "gender": "V",
+                    "location": {
+                        "locationId": "2.W01.15a",
+                        "name": "The red one",
+                        "description": "Wachtruimte NKO"
+                    },
+                    "roles": ["Patient"]
+                }],
+                "proposedArrivalTime": "2016-03-11T13:30:00.000Z",
+                "proposedArrivalTimeWindow": {
+                    "timeWindowStart": "2016-03-11T13:30:00.000Z",
+                    "timeWindowEnd": "2016-03-11T13:50:00.000Z"
+                },
+                "startLocation": {
+                    "locationId": "2.W01.15a",
+                    "description": "The red one",
+                    "name": "Wachtruimte NKO"
+                },
+                "endLocation": {
+                    "locationId": "1.W01.17a",
+                    "description": "The blue one",
+                    "name": "ReceptionBooth1"
+                },
+                "tasks": [{
+                    "taskId": "76f8f381-4dd6-4e1d-a591-8a4d49ac0bce"
+                }]
             }
-        }
+            
+    + Schema
+    
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+
+                "definitions": {
+                    "type": {
+                        "type": "string",
+                        "enum": [ "ProcessRequest", "Task", "Action" ]
+                    },
+                    "guidId": {
+                        "type": "string",
+                        "pattern": "[0-9A-Fa-f]{8}[-]?([0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}"
+                    },
+                    "millisecondTimestampZ": {
+                        "type": "string",
+                        "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}Z"
+                    },
+                    "yearsToSecondsDuration": {
+                        "type": "string",
+                        "pattern": "P((([0-9]*.?[0-9]*)Y)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)W)?(([0-9]*.?[0-9]*)D)?)?(T(([0-9]*.?[0-9]*)H)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)S)?)?"
+                    },
+                    "millisecondTimeWindowZ": {
+                        "type": "object",
+                        "properties": {
+                            "timeWindowStart": { "ref": "#/definitions/millisecondTimestampZ" },
+                            "timeWindowEnd": { "ref": "#/definitions/millisecondTimestampZ" }
+                        }
+                    },
+                    "dateOnly": {
+                        "type": "string",
+                        "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [ "M", "V", "F", "O", "U" ]
+                    },
+                    "coordinates": {
+                        "type": "string",
+                        "pattern": "[0-9].[a-zA-Z]?[a-zA-Z][0-9][0-9].[0-9][0-9][a-z]?"
+                    },
+                    "location": {
+                        "type": "object",
+                        "properties": {
+                            "locationId": { "$ref": "#/definitions/coordinates" },
+                            "name": { "type": "string" },
+                            "description": { "type": "string" },
+                            "coordinates": { "type": "string" }
+                        },
+                        "required": ["locationId"]
+                    },
+                    "creator": {
+                        "type": "string",
+                        "enum": [ "Aorta Message Broker", "Task Manager", "Notification Engine", "Context Engine", "Scheduling Application", "Wearable" ]
+                    },
+                    "taskState": {
+                        "type": "string",
+                        "enum": [ "Requested", "ToSchedule", "Scheduled", "Assigned", "Notified", "Accepted", "InProgress", "Refused", "Timeout", "Unreachable", "Interrupted", "Delayed", "Finished", "Cancelled" ]
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": [ "Urgent", "High", "Normal", "Low" ]
+                    },
+                    "taskType": {
+                        "type": "string",
+                        "enum": [ "PatientTransport", "GoodsTransport" ]
+                    },
+                    "taskMode": {
+                        "type": "string",
+                        "enum": ["Afroep", "Herhalend"]
+                    },
+                    "transportType": {
+                        "type": "string",
+                        "enum": ["Enkel", "Heen", "Terug"]
+                    },
+                    "transportMode": {
+                        "type": "string",
+                        "enum": ["TeVoet", "Rolstoel", "Bed"]
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [ "Nurse", "Doctor", "Patient", "Technician", "Logistics", "Administrative" ]
+                    },
+                    "identificationMethod": {
+                        "type": "object",
+                        "properties": {
+                            "identificationMethod": { "type": "string", "enum": [ "OazisPatientId", "NFC" ] },
+                            "identificationKey": { "type": "string" }
+                        },
+                        "required": [ "identificationMethod", "identificationKey" ]
+                    },
+                    "person": {
+                        "type": "object",
+                        "properties": {
+                            "personId": { "$ref": "#/definitions/guidId" },
+                            "firstName": { "type": "string" },
+                            "lastName": { "type": "string" },
+                            "birthDate": { "$ref": "#/definitions/dateOnly" },
+                            "gender": { "$ref": "#/definitions/gender" },
+                            "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
+                            "location": { "$ref": "#/definitions/location" },
+                            "roles": { "type": "array", "items": { "$ref": "#/definitions/role" } },
+                            "competences": { "type": "array", "items": { "$ref": "#/definitions/competence" } },
+                            "isActive": { "type": "boolean" },
+                            "actionOptions": {}
+                        },
+                        "anyOf" : [
+                            { "required" : [ "personId", "firstName", "lastName", "birthDate", "gender" ] },
+                            { "required" : [ "personId", "identificationMethods" ] }
+                        ]
+                    },
+                    "processLinks": {
+                        "type": "object",
+                        "properties": {
+                            "nextProcessId": { "$ref": "#/definitions/guidId" },
+                            "previousProcessId": { "$ref": "#/definitions/guidId" },
+                            "requiredPreviousProcessState": { "$ref": "#/definitions/taskState" }
+                        },
+                        "anyOf" : [
+                            { "required" : [ "nextProcessId" ] },
+                            { "required" : [ "previousProcessId" ] }
+                        ]
+                    },
+                    "preconditionState": {
+                        "type": "string",
+                        "enum": [ "Todo", "Done", "Achieved" ]
+                    },
+                    "precondition": {
+                        "type": "object",
+                        "properties": {
+                            "preconditionId": { "$ref": "#/definitions/guidId" },
+                            "description": { "type": "string" },
+                            "preconditionState": { "$ref": "#/definitions/preconditionState" }
+                        },
+                        "required" : [ "preconditionId" ]
+                    },
+                    "task": {
+                        "type": "object",
+                        "properties": {
+                            "taskId": { "$ref": "#/definitions/guidId" }
+                        }
+                    }
+                },
+
+                "type": "object",
+                "required": [ "processId", "type", "taskState", "taskType" ],
+                "properties": {
+                    "processId": { "$ref": "#/definitions/guidId" },
+                    "type": { "$ref": "#/definitions/type" },
+                    "description": { "type": "string" },
+                    "taskState": { "$ref": "#/definitions/taskState"},
+                    "creationTime": { "$ref": "#/definitions/millisecondTimestampZ" },
+                    "creator": { "$ref": "#/definitions/creator" },
+                    "taskType": { "$ref": "#/definitions/taskType" },
+                    "priority": { "$ref": "#/definitions/priority"},
+                    "taskMode": { "$ref": "#/definitions/taskMode"},
+                    "taskCanStart": { "type": "boolean" },
+                    "transportMode": { "$ref": "#/definitions/transportMode" },
+                    "transportType": { "$ref": "#/definitions/transportType" },
+                    "processLinks": { "type": "array", "items": {"$ref": "#/definitions/processLinks"} },
+                    "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
+                    "proposedDepartureTime": { "$ref": "#/definitions/millisecondTimestampZ" },
+                    "proposedDepartureTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
+                    "proposedArrivalTime": { "$ref": "#/definitions/millisecondTimestampZ" },
+                    "proposedArrivalTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
+                    "proposedRecurringInterval": { "$ref": "#/definitions/yearsToSecondsDuration" },
+                    "startLocation": { "$ref": "#/definitions/location" },
+                    "endLocation": { "$ref": "#/definitions/location" },
+                    "responseDeadline": { "$ref": "#/definitions/millisecondTimestampZ" },
+                    "preconditions": { "type": "array", "items": {"$ref": "#/definitions/precondition"} },
+                    "tasks": { "type": "array", "items": {"$ref": "#/definitions/task"} }
+                }
+            }
 
 + Response 200 (application/json)
 
@@ -113,10 +296,6 @@ Process Requests are used as input to create one or multiple tasks.
             {
                 "AortaMessageBrokerOutputResponse": "Rejected"
             }
-
-+ Response 200 (application/json)
-
-+ Response 400 (application/json)
 
 ### Delete a Process Request [DELETE]
 
@@ -131,56 +310,6 @@ Process Requests are used as input to create one or multiple tasks.
             }
 
 ### Update a Process Request [PUT]
-
-+ Request (application/json)
-
-        {
-            "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
-            "creationTime": "2016-03-10T12:34:56.123CEST",
-            "creator": "Task Manager",
-            "state": "Requested",
-            "priority": "Normal",
-            "taskMode": "Afroep",
-            "taskType": "PatientTransport",
-            "transportMode": "Rolstoel",
-            "transportType": "Heen",
-            "processLink": [{
-               "nextProcessId": "7278b5d1-afb8-4f4b-8141-615dd283c5d4"
-            }],
-           "personObjects": [{
-               "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
-               "identificationMethods": [
-                  { "identificationMethod": "OazisPatientId", "identificationKey": "12345678" }
-               ],
-               "firstName": "Goedele",
-               "lastName": "Bruynooghe",
-               "birthDate": "25/05/1961",
-               "location": {
-                  "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                  "name": "Room 2A 243"
-               },
-               "roles": ["Patient"]
-           }],
-            "proposedArrivalTime": "2016-03-11T13:30CEST",
-            "proposedArrivalTimeWindow": {
-               "timeWindowStart": "2016-03-11T13:30CEST",
-               "timeWindowEnd": "2016-03-11T13:50CEST"
-            },
-            "expectedDuration": "00:50",
-           "startLocation": {
-               "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-               "name": "Room 2A 243"
-            },
-           "endLocation": {
-               "locationId": "bdaafaf8-d5d1-45ef-9bbc-5e425b09b262",
-               "name": "Room xxxx",
-               "description": "Wachtruimte NKO"
-            },
-            "tasks": [{
-               "taskId": "76f8f381-4dd6-4e1d-a591-8a4d49ac0bce",
-               "etcetera": "etc"
-            }]
-        }
 
 + Response 200 (application/json)
 
