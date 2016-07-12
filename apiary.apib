@@ -323,7 +323,8 @@ Process Requests are used as input to create one or multiple tasks.
 
 ## Tasks Collection [/api/tasks/:taskId]
 
-The collection of messages that deals with Tasks. Tasks are actions that need to be performed by a person.
+The collection of messages that deals with Tasks.
+Tasks contain actions that need to be performed by a person.
 
 **POST requests**
  - First POST request: This message creates a task.
@@ -343,131 +344,28 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
 
 + Request (application/json)
 
-        {
-            "taskId": "a6baa2d8-03c8-4743-8f9a-ba633ba0d0e6",
-            "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
-            "description": "Pickup Rita",
-            "creationTime": "2016-05-25T15:11:32.366Z",
-            "creator": "Scheduling application",
-            "type": "Task",
-            "subject": {
-                "personId": "52a39c42-3e69-4940-a348-49bd93790eda",
-                "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }] 
-                "firstName": "Jan",
-                "lastName": "Janssens",
-                "birthDate": "2016-05-25T00:00:00.000Z",
-                "location": {
-                    "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                    "description": "The blue one",
-                    "name": "ReceptionBooth1",
-                    "coordinates": "x;y;z"
-                },
-                "roles": ["Nurse"],
-                "devices": [{
-                    "deviceId": "a0d56ed4-b6f5-4059-8385-939ea26b0f96",
-                    "description": "Samsung Gear S2",
-                    "location": {
-                        "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                        "description": "The blue one",
-                        "name": "ReceptionBooth1",
-                        "coordinates": "x;y;z"
-                    },
-                    "deviceType": "Smart watch",
-                    "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }]
-                }],
-                "competences": ["CareTransport", "LogisticTransport"],
-                "isActive": true
-            },
-            "taskType": "PatientTransport",
-            "personObjects": [{
-                "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
-                "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }],
-                "firstName": "Person",
-                "lastName": "1",
-                "birthDate": "2016-05-25T00:00:00.000Z",
-                "location": {
-                    "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                    "description": "The blue one",
-                    "name": "ReceptionBooth1",
-                    "coordinates": "x;y;z"
-                },
-                "roles": ["Nurse"],
-                "devices": [{
-                    "deviceId": "a0d56ed4-b6f5-4059-8385-939ea26b0f96",
-                    "description": "Samsung Gear S2",
-                    "location": {
-                        "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                        "description": "The blue one",
-                        "name": "ReceptionBooth1",
-                        "coordinates": "x;y;z"
-                    },
-                    "deviceType": "Smart watch",
-                    "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }]
-                }],
-                "competences": ["CareTransport", "LogisticTransport"],
-                "isActive": true
-            }],
-            "itemObjects": [{
-                "itemId": "2e8d0baf-237d-4547-a473-b98fe15edc37",
-                "description": "Green Wheelchair",
-                "location": {
-                    "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                    "description": "The blue one",
-                    "name": "ReceptionBooth1",
-                    "coordinates": "x;y;z"
-                },
-                "itemType": "Wheelchair",
-                "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }]
-            }],
-            "startLocation": {
-                "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                "description": "The blue one",
-                "name": "ReceptionBooth1",
-                "coordinates": "x;y;z"
-            },
-            "endLocation": {
-                "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
-                "description": "The blue one",
-                "name": "ReceptionBooth1",
-                "coordinates": "x;y;z"
-            },
-            "responseDeadline": "2016-05-25T15:11:32.375Z",
-            "preconditions": [{
-                "preconditionId": "4732516b-90f7-4f4d-adaa-922d853feb2d",
-                "state": "Todo",
-                "description": "The patient needs oxygen"
-            }, {
-                "preconditionId": "87e09b2f-c154-4310-a4f5-d3c676fb28be",
-                "state": "Done",
-                "description": "For this transport a wheelchair is needed"
-            }],
-            "actions": [{
-                "actionId": "9b8cd5c1-084c-4df0-a174-57bf54a718c0",
+    + Body
+
+            {
+                "taskId": "a6baa2d8-03c8-4743-8f9a-ba633ba0d0e6",
+                "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
+                "type": "Task",
+                "description": "Pickup Rita",
+                "taskState": "InProgress",
+                "creationTime": "2016-05-25T15:11:32.366Z",
+                "creator": "Scheduling Application",
+                "taskType": "PatientTransport",
+                "priority": "Normal",
                 "subject": {
-                    "personId": "4274d23a-de9f-43ba-a64e-107d1565a91e",
-                    "identificationMethods": ["NFC"],
-                    "firstName": "Nurse",
-                    "lastName": "1",
+                    "personId": "52a39c42-3e69-4940-a348-49bd93790eda",
+                    "identificationMethods": [{
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }],
+                    "firstName": "Jan",
+                    "lastName": "Janssens",
+                    "birthDate": "2016-05-25T00:00:00.000Z",
                     "location": {
                         "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
                         "description": "The blue one",
@@ -486,42 +384,29 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         },
                         "deviceType": "Smart watch",
                         "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }]
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }]
                     }],
                     "competences": ["CareTransport", "LogisticTransport"],
                     "isActive": true
                 },
-                "actionType": "Pickup",
                 "personObjects": [{
                     "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
                     "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }],
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }],
                     "firstName": "Person",
                     "lastName": "1",
-                    "birthDate": "25/05/2016",
+                    "birthDate": "2016-05-25T00:00:00.000Z",
                     "location": {
                         "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
                         "description": "The blue one",
                         "name": "ReceptionBooth1",
                         "coordinates": "x;y;z"
-                    },
-                    "actionOptions": {
-                        "carrier": [{
-                            "key": "bed"
-                        }],
-                        "warning": [{
-                                "key": "gloves",
-                                "text": "Voorzorgsmaatregelen: handschoenen"
-                            }, {
-                                "key": "O2",
-                                "text": "niet vergeten: O2"
-                        }]
                     },
                     "roles": ["Nurse"],
                     "devices": [{
@@ -535,10 +420,10 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         },
                         "deviceType": "Smart watch",
                         "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }]
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }]
                     }],
                     "competences": ["CareTransport", "LogisticTransport"],
                     "isActive": true
@@ -552,16 +437,12 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                         "name": "ReceptionBooth1",
                         "coordinates": "x;y;z"
                     },
-                    "actionOptions": {
-                        "carrier": ["O2"].
-                        "warning": []
-                    },
                     "itemType": "Wheelchair",
                     "identificationMethods": [{
-                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                        "type": "NFC",
-                        "value":"1234"
-                        }]
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }]
                 }],
                 "startLocation": {
                     "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
@@ -575,23 +456,355 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
                     "name": "ReceptionBooth1",
                     "coordinates": "x;y;z"
                 },
-                "effectiveStartTime": "2016-05-25T15:11:32.382Z",
-                "effectiveEndTime": "2016-05-25T15:11:32.382Z",
+                "responseDeadline": "2016-05-25T15:11:32.375Z",
                 "preconditions": [{
+                    "preconditionId": "4732516b-90f7-4f4d-adaa-922d853feb2d",
+                    "state": "Todo",
+                    "description": "The patient needs oxygen"
+                }, {
                     "preconditionId": "87e09b2f-c154-4310-a4f5-d3c676fb28be",
-                    "state": "Achieved",
+                    "state": "Done",
                     "description": "For this transport a wheelchair is needed"
                 }],
-                "state": "Busy",
-                "delayReason": "Patient not available",
-                "delayDuration": "30",
-                "description": "Pickup patient X",
-                "priority": "Urgent"
-            }],
-            "state": "Busy",
-            "priority": "Normal"
-        }
+                "actions": [{
+                    "actionId": "9b8cd5c1-084c-4df0-a174-57bf54a718c0",
+                    "subject": {
+                        "personId": "4274d23a-de9f-43ba-a64e-107d1565a91e",
+                        "identificationMethods": ["NFC"],
+                        "firstName": "Nurse",
+                        "lastName": "1",
+                        "location": {
+                            "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                            "description": "The blue one",
+                            "name": "ReceptionBooth1",
+                            "coordinates": "x;y;z"
+                        },
+                        "roles": ["Nurse"],
+                        "devices": [{
+                            "deviceId": "a0d56ed4-b6f5-4059-8385-939ea26b0f96",
+                            "description": "Samsung Gear S2",
+                            "location": {
+                                "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                                "description": "The blue one",
+                                "name": "ReceptionBooth1",
+                                "coordinates": "x;y;z"
+                            },
+                            "deviceType": "Smart watch",
+                            "identificationMethods": [{
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }]
+                        }],
+                        "competences": ["CareTransport", "LogisticTransport"],
+                        "isActive": true
+                    },
+                    "actionType": "Pickup",
+                    "personObjects": [{
+                        "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
+                        "identificationMethods": [{
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }],
+                        "firstName": "Person",
+                        "lastName": "1",
+                        "birthDate": "25/05/2016",
+                        "location": {
+                            "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                            "description": "The blue one",
+                            "name": "ReceptionBooth1",
+                            "coordinates": "x;y;z"
+                        },
+                        "actionOptions": {
+                            "carrier": [{
+                                "key": "bed"
+                            }],
+                            "warning": [{
+                                    "key": "gloves",
+                                    "text": "Voorzorgsmaatregelen: handschoenen"
+                                }, {
+                                    "key": "O2",
+                                    "text": "niet vergeten: O2"
+                            }]
+                        },
+                        "roles": ["Nurse"],
+                        "devices": [{
+                            "deviceId": "a0d56ed4-b6f5-4059-8385-939ea26b0f96",
+                            "description": "Samsung Gear S2",
+                            "location": {
+                                "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                                "description": "The blue one",
+                                "name": "ReceptionBooth1",
+                                "coordinates": "x;y;z"
+                            },
+                            "deviceType": "Smart watch",
+                            "identificationMethods": [{
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }]
+                        }],
+                        "competences": ["CareTransport", "LogisticTransport"],
+                        "isActive": true
+                    }],
+                    "itemObjects": [{
+                        "itemId": "2e8d0baf-237d-4547-a473-b98fe15edc37",
+                        "description": "Green Wheelchair",
+                        "location": {
+                            "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                            "description": "The blue one",
+                            "name": "ReceptionBooth1",
+                            "coordinates": "x;y;z"
+                        },
+                        "actionOptions": {
+                            "carrier": ["O2"],
+                            "warning": []
+                        },
+                        "itemType": "Wheelchair",
+                        "identificationMethods": [{
+                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                            "type": "NFC",
+                            "value":"1234"
+                            }]
+                    }],
+                    "startLocation": {
+                        "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                        "description": "The blue one",
+                        "name": "ReceptionBooth1",
+                        "coordinates": "x;y;z"
+                    },
+                    "endLocation": {
+                        "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
+                        "description": "The blue one",
+                        "name": "ReceptionBooth1",
+                        "coordinates": "x;y;z"
+                    },
+                    "effectiveStartTime": "2016-05-25T15:11:32.382Z",
+                    "effectiveEndTime": "2016-05-25T15:11:32.382Z",
+                    "preconditions": [{
+                        "preconditionId": "87e09b2f-c154-4310-a4f5-d3c676fb28be",
+                        "state": "Achieved",
+                        "description": "For this transport a wheelchair is needed"
+                    }],
+                    "state": "Busy",
+                    "delayReason": "Patient not available",
+                    "delayDuration": "30",
+                    "description": "Pickup patient X",
+                    "priority": "Urgent"
+                }]
+            }
 
+    + Schema
+    
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+
+                "definitions": {
+                    "type": {
+                        "type": "string",
+                        "enum": [ "ProcessRequest", "Task", "Action" ]
+                    },
+                    "guidId": {
+                        "type": "string",
+                        "pattern": "[0-9A-Fa-f]{8}[-]?([0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}"
+                    },
+                    "millisecondTimestampZ": {
+                        "type": "string",
+                        "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}Z"
+                    },
+                    "yearsToSecondsDuration": {
+                        "type": "string",
+                        "pattern": "P((([0-9]*.?[0-9]*)Y)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)W)?(([0-9]*.?[0-9]*)D)?)?(T(([0-9]*.?[0-9]*)H)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)S)?)?"
+                    },
+                    "millisecondTimeWindowZ": {
+                        "type": "object",
+                        "properties": {
+                            "timeWindowStart": { "ref": "#/definitions/millisecondTimestampZ" },
+                            "timeWindowEnd": { "ref": "#/definitions/millisecondTimestampZ" }
+                        }
+                    },
+                    "dateOnly": {
+                        "type": "string",
+                        "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [ "M", "V", "F", "O", "U" ]
+                    },
+                    "coordinates": {
+                        "type": "string",
+                        "pattern": "[0-9].[a-zA-Z]?[a-zA-Z][0-9][0-9].[0-9][0-9][a-z]?"
+                    },
+                    "location": {
+                        "type": "object",
+                        "properties": {
+                            "locationId": { "$ref": "#/definitions/coordinates" },
+                            "name": { "type": "string" },
+                            "description": { "type": "string" },
+                            "coordinates": { "type": "string" }
+                        },
+                        "required": [ "locationId" ]
+                    },
+                    "creator": {
+                        "type": "string",
+                        "enum": [ "Aorta Message Broker", "Task Manager", "Notification Engine", "Context Engine", "Scheduling Application", "Wearable" ]
+                    },
+                    "taskState": {
+                        "type": "string",
+                        "enum": [ "Requested", "ToSchedule", "Scheduled", "Assigned", "Notified", "Accepted", "InProgress", "Refused", "Timeout", "Unreachable", "Interrupted", "Delayed", "Finished", "Cancelled" ]
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": [ "Urgent", "High", "Normal", "Low" ]
+                    },
+                    "taskType": {
+                        "type": "string",
+                        "enum": [ "PatientTransport", "GoodsTransport" ]
+                    },
+                    "taskMode": {
+                        "type": "string",
+                        "enum": ["Afroep", "Herhalend"]
+                    },
+                    "transportType": {
+                        "type": "string",
+                        "enum": ["Enkel", "Heen", "Terug"]
+                    },
+                    "transportMode": {
+                        "type": "string",
+                        "enum": ["TeVoet", "Rolstoel", "Bed"]
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [ "Nurse", "Doctor", "Patient", "Technician", "Logistics", "Administrative" ]
+                    },
+                    "identificationMethod": {
+                        "type": "object",
+                        "properties": {
+                            "identificationMethodId": { "$ref": "#/definitions/guidId" },
+                            "type": { "type": "string", "enum": [ "OazisPatientId", "NFC" ] },
+                            "value": { "type": "string" }
+                        },
+                        "required": [ "identificationMethodId", "type" ]
+                    },
+                    "person": {
+                        "type": "object",
+                        "properties": {
+                            "personId": { "$ref": "#/definitions/guidId" },
+                            "firstName": { "type": "string" },
+                            "lastName": { "type": "string" },
+                            "birthDate": { "$ref": "#/definitions/millisecondTimestampZ" },
+                            "gender": { "$ref": "#/definitions/gender" },
+                            "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
+                            "location": { "$ref": "#/definitions/location" },
+                            "roles": { "type": "array", "items": { "$ref": "#/definitions/role" } },
+                            "competences": { "type": "array", "items": { "$ref": "#/definitions/competence" } },
+                            "isActive": { "type": "boolean" },
+                            "actionOptions": {}
+                        },
+                        "anyOf" : [
+                            { "required" : [ "personId", "firstName", "lastName", "birthDate", "gender" ] },
+                            { "required" : [ "personId", "identificationMethods" ] }
+                        ]
+                    },
+                    "processLinks": {
+                        "type": "object",
+                        "properties": {
+                            "nextProcessId": { "$ref": "#/definitions/guidId" },
+                            "previousProcessId": { "$ref": "#/definitions/guidId" },
+                            "requiredPreviousProcessState": { "$ref": "#/definitions/taskState" }
+                        },
+                        "anyOf" : [
+                            { "required" : [ "nextProcessId" ] },
+                            { "required" : [ "previousProcessId" ] }
+                        ]
+                    },
+                    "preconditionState": {
+                        "type": "string",
+                        "enum": [ "Todo", "Done", "Achieved" ]
+                    },
+                    "precondition": {
+                        "type": "object",
+                        "properties": {
+                            "preconditionId": { "$ref": "#/definitions/guidId" },
+                            "description": { "type": "string" },
+                            "preconditionState": { "$ref": "#/definitions/preconditionState" }
+                        },
+                        "required" : [ "preconditionId" ]
+                    },
+                    "task": {
+                        "type": "object",
+                        "properties": {
+                            "taskId": { "$ref": "#/definitions/guidId" }
+                        }
+                    },
+                    "competence": {
+                        "type": "string",
+                        "enum": [ "CareTransport", "LogisticTransport" ]
+                    },
+                    "deviceType": {
+                        "type": "string",
+                        "enum": [ "Smart watch" ]
+                    },
+                    "device": {
+                        "type": "object",
+                        "properties": {
+                            "deviceId": { "$ref": "#/definitions/guidId" },
+                            "description": { "type": "string" },
+                            "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
+                            "location": { "$ref": "#/definitions/location" },
+                            "deviceType": { "$ref": "#/definitions/deviceType" }
+                        },
+                        "required" : [ "deviceId", "identificationMethods" ]
+                    },
+                    "itemType": {
+                        "type": "string",
+                        "enum": [ "Wheelchair" ]
+                    },
+                    "item": {
+                        "type": "object",
+                        "properties": {
+                            "itemId": { "$ref": "#/definitions/guidId" },
+                            "description": { "type": "string" },
+                            "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
+                            "location": { "$ref": "#/definitions/location" },
+                            "itemType": { "$ref": "#/definitions/itemType" }
+                        },
+                        "required" : [ "itemId", "identificationMethods" ]
+                    },
+                    "action": {
+                        "type": "object",
+                        "properties": {
+                            "actionId": { "$ref": "#/definitions/guidId" }
+                        }
+                    }
+                },
+
+                "type": "object",
+                "required": [ "taskId", "type", "processId", "taskState", "taskType" ],
+                "properties": {
+                    "taskId": { "$ref": "#/definitions/guidId" },
+                    "processId": { "$ref": "#/definitions/guidId" },
+                    "type": { "$ref": "#/definitions/type" },
+                    "description": { "type": "string" },
+                    "taskState": { "$ref": "#/definitions/taskState"},
+                    "creationTime": { "$ref": "#/definitions/millisecondTimestampZ" },
+                    "creator": { "$ref": "#/definitions/creator" },
+                    "taskType": { "$ref": "#/definitions/taskType" },
+                    "priority": { "$ref": "#/definitions/priority"},
+                    "taskMode": { "$ref": "#/definitions/taskMode"},
+                    "taskCanStart": { "type": "boolean" },
+                    "subject": { "$ref": "#/definitions/person" },
+                    "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
+                    "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
+                    "startLocation": { "$ref": "#/definitions/location" },
+                    "endLocation": { "$ref": "#/definitions/location" },
+                    "responseDeadline": { "$ref": "#/definitions/millisecondTimestampZ" },
+                    "preconditions": { "type": "array", "items": {"$ref": "#/definitions/precondition"} },
+                    "actions": { "type": "array", "items": {"$ref": "#/definitions/action"} }
+                }
+            }
+        
 + Response 200 (application/json)
 
 + Response 400 (application/json)
@@ -606,9 +819,25 @@ The collection of messages that deals with Tasks. Tasks are actions that need to
 
 + Response 200 (application/json)
 
++ Response 400 (application/json)
+
+    + Body
+    
+            {
+                "AortaMessageBrokerOutputResponse": "Rejected"
+            }
+
 ### Update a Task [PUT]
 
 + Response 200 (application/json)
+
++ Response 400 (application/json)
+
+    + Body
+    
+            {
+                "AortaMessageBrokerOutputResponse": "Rejected"
+            }
 
 ## Patient Admissions Collection [/api/patients/123456/admissions]
 
