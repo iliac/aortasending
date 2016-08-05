@@ -412,6 +412,20 @@ Tasks contain actions that need to be performed by a person.
                         "isActive": true
                     },
                     "actionType": "Pickup",
+                    “actionOptions”: [
+                            { 
+                            “actionOptionId” : ”00000000-0000-0000-0000-000000000001”,
+                            “type” : ”carrier”,
+                            “value” : “bed”,
+                            “description” : “”
+                            },
+                            {
+                            “actionOptionId”:”00000000-0000-0000-0000-000000000002”, 
+                            “type” : ”warning”, 
+                            “value” : ”gloves”, 
+                            “description” : ”Voorzorgsmaatregelen handschoenen”
+                            }]
+                    ,
                     "personObjects": [{
                         "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
                         "identificationMethods": [{
@@ -425,18 +439,6 @@ Tasks contain actions that need to be performed by a person.
                         "location": {
                             "locationId": "cf12ce64-3080-4306-b3eb-daf9da8ac373",
                             "name": "ReceptionBooth1",
-                        },
-                        "actionOptions": {
-                            "carrier": [{
-                                "key": "bed"
-                            }],
-                            "warning": [{
-                                    "key": "gloves",
-                                    "text": "Voorzorgsmaatregelen: handschoenen"
-                                }, {
-                                    "key": "O2",
-                                    "text": "niet vergeten: O2"
-                            }]
                         },
                         "roles": ["Nurse"],
                         "devices": [{
