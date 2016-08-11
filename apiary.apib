@@ -335,10 +335,10 @@ Tasks contain actions that need to be performed by a person.
                 "subject": {
                     "personId": "00000000-0000-0000-0000-000000000203",
                     "identificationMethods": [{
-                            "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
-                            "type": "NFC",
-                            "value":"1234"
-                            }],
+                        "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
+                        "type": "NFC",
+                        "value":"1234"
+                    }],
                     "firstName": "Jan",
                     "lastName": "Janssens",
                     "birthDate": "2016-05-25T00:00:00.000Z",
@@ -352,18 +352,12 @@ Tasks contain actions that need to be performed by a person.
                     "devices": [{
                         "deviceId": "a0d56ed4-b6f5-4059-8385-939ea26b0f96",
                         "description": "Samsung Gear S2",
-                        "location": {
-                            "locationId": "0.N92.09",
-                            "name": "0.N92.09",
-                            "description" : "http://aorta.intec.ugent.be/ontology/aorta.owl#Elevator",
-                            "coordinates" : "0--4984"
-                        },
                         "deviceType": "Smart watch",
                         "identificationMethods": [{
                             "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
                             "type": "NFC",
                             "value":"1234"
-                            }]
+                        }]
                     }],
                     "competences": ["CareTransport", "LogisticTransport"],
                     "isActive": true
@@ -384,19 +378,17 @@ Tasks contain actions that need to be performed by a person.
                 "actions": [{
                     "actionId": "9b8cd5c1-084c-4df0-a174-57bf54a718c0",
                     "actionType": "Pickup",
-                    "actionOptions": [
-                            { 
-                            "actionOptionId" : "00000000-0000-0000-0000-000000000001",
-                            "type" : "carrier",
-                            "value" : "bed",
-                            "description" : ""
-                            },
-                            {
-                            "actionOptionId":"00000000-0000-0000-0000-000000000002", 
-                            "type" : "warning", 
-                            "value" : "gloves", 
-                            "description" : "Voorzorgsmaatregelen handschoenen"
-                            }]
+                    "actionOptions": [{ 
+                        "actionOptionId" : "00000000-0000-0000-0000-000000000001",
+                        "type" : "carrier",
+                        "value" : "bed",
+                        "description" : ""
+                    },{
+                        "actionOptionId":"00000000-0000-0000-0000-000000000002", 
+                        "type" : "warning", 
+                        "value" : "gloves", 
+                        "description" : "Voorzorgsmaatregelen handschoenen"
+                    }]
                     ,
                     "personObjects": [{
                         "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
@@ -404,7 +396,7 @@ Tasks contain actions that need to be performed by a person.
                             "identificationMethodId" : "24a87862-0e8d-4e5e-8740-da1c818d843d",
                             "type": "NFC",
                             "value":"1234"
-                            }],
+                        }],
                         "firstName": "Person",
                         "lastName": "1",
                         "birthDate": "25/05/2016",
