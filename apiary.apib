@@ -9,12 +9,10 @@ List of services that will be called on remote applications:
 
  - Process Request - Task Management Application
    - Create a Process Request           POST   http://aorta:8441/api/processrequests/aeb7d11b-5588-4de7-822e-bd4a94da4df7
-   - Delete a Process Request           DELETE http://aorta:8441/api/processrequests/aeb7d11b-5588-4de7-822e-bd4a94da4df7
    - Update a Process Request           PUT    http://aorta:8441/api/processrequests/aeb7d11b-5588-4de7-822e-bd4a94da4df7
 
  - Tasks - Dynamic Scheduling Application
    - Create a Task                      POST   http://aorta-api:8311/api/tasks/aeb7d11b-5588-4de7-822e-bd4a94da4df7
-   - Delete a Task                      DELETE http://aorta-api:8311/api/tasks/aeb7d11b-5588-4de7-822e-bd4a94da4df7
    - Update a Task                      PUT    http://aorta-api:8311/api/tasks/aeb7d11b-5588-4de7-822e-bd4a94da4df7
 
 ## Process Requests Collection [/api/processrequests]
@@ -27,15 +25,17 @@ Process Requests are used as input to create one or multiple tasks.
 
 **POST responses**
  - First POST response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
- - Second POST response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - Second POST response: HTTP 1/1 400 Bad Request. AortaMessageBroker will then discard the message from the FIFO to that receiver.
  - All other POST responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
-
-**DELETE requests**
- - First DELETE request: This message deletes a process request.
 
 **PUT requests**
  - First PUT request: This message updates a process request.
 
+**PUT responses**
+ - First PUT response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second PUT response: HTTP 1/1 400 Bad Request. AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other PUT responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
+ 
 ### Create a Process Request [POST]
 
 + Request (application/json)
@@ -273,35 +273,11 @@ Process Requests are used as input to create one or multiple tasks.
 
 + Response 400 (application/json)
 
-    + Body
-    
-            {
-                "AortaMessageBrokerOutputResponse": "Rejected"
-            }
-
-### Delete a Process Request [DELETE]
-
-+ Response 200 (application/json)
-
-+ Response 400 (application/json)
-
-    + Body
-        
-            {
-                "AortaMessageBrokerOutputResponse": "Rejected"
-            }
-
 ### Update a Process Request [PUT]
 
 + Response 200 (application/json)
 
 + Response 400 (application/json)
-
-    + Body
-    
-            {
-                "AortaMessageBrokerOutputResponse": "Rejected"
-            }
 
 ## Tasks Collection [/api/tasks]
 
@@ -313,14 +289,16 @@ Tasks contain actions that need to be performed by a person.
 
 **POST responses**
  - First POST response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
- - Second POST response: HTTP 1/1 400 Bad Request, with specific body (see below). AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - Second POST response: HTTP 1/1 400 Bad Request. AortaMessageBroker will then discard the message from the FIFO to that receiver.
  - All other POST responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
-
-**DELETE requests**
- - First DELETE request: This message deletes a task.
 
 **PUT requests**
  - First PUT request: This message updates a task.
+
+**PUT responses**
+ - First PUT response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
+ - Second PUT response: HTTP 1/1 400 Bad Request. AortaMessageBroker will then discard the message from the FIFO to that receiver.
+ - All other PUT responses: AortaMessagebroker will keep repeating the same message (with configurable interval).
 
 ### Create a Task [POST]
 
@@ -642,32 +620,8 @@ Tasks contain actions that need to be performed by a person.
 
 + Response 400 (application/json)
 
-    + Body
-    
-            {
-                "AortaMessageBrokerOutputResponse": "Rejected"
-            }
-
-### Delete a Task [DELETE]
-
-+ Response 200 (application/json)
-
-+ Response 400 (application/json)
-
-    + Body
-    
-            {
-                "AortaMessageBrokerOutputResponse": "Rejected"
-            }
-
 ### Update a Task [PUT]
 
 + Response 200 (application/json)
 
 + Response 400 (application/json)
-
-    + Body
-    
-            {
-                "AortaMessageBrokerOutputResponse": "Rejected"
-            }
