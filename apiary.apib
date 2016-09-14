@@ -123,7 +123,6 @@ Process Requests are used as input to create one or multiple tasks.
                             "timeWindowEnd": { "ref": "#/definitions/millisecondTimestampZ" }
                         }
                     },
-                    "responseDeadline": { "ref": "#/definitions/millisecondTimestampZ" },
                     "dateOnly": {
                         "type": "string",
                         "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]"
@@ -260,6 +259,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "proposedDepartureTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
                     "proposedArrivalTime": { "$ref": "#/definitions/millisecondTimestampZ" },
                     "proposedArrivalTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
+                    "responseDeadline": { "ref": "#/definitions/millisecondTimestampZ" },
                     "proposedRecurringInterval": { "$ref": "#/definitions/yearsToSecondsDuration" },
                     "startLocation": { "$ref": "#/definitions/location" },
                     "endLocation": { "$ref": "#/definitions/location" },
