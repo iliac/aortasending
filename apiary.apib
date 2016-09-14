@@ -78,6 +78,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "timeWindowStart": "2016-03-11T13:30:00.000Z",
                     "timeWindowEnd": "2016-03-11T13:50:00.000Z"
                 },
+                "responseDeadline": "2016-03-11T13:50:00.000Z",
                 "startLocation": {
                     "locationId": "2.W01.15a",
                     "description": "The red one",
@@ -122,6 +123,7 @@ Process Requests are used as input to create one or multiple tasks.
                             "timeWindowEnd": { "ref": "#/definitions/millisecondTimestampZ" }
                         }
                     },
+                    "responseDeadline": { "ref": "#/definitions/millisecondTimestampZ" },
                     "dateOnly": {
                         "type": "string",
                         "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]"
