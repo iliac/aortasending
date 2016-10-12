@@ -78,6 +78,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "timeWindowStart": "2016-03-11T13:30:00.000Z",
                     "timeWindowEnd": "2016-03-11T13:50:00.000Z"
                 },
+                "determinative": "ArrivalTime",
                 "responseDeadline": "2016-03-11T13:50:00.000Z",
                 "startLocation": {
                     "locationId": "2.W01.15a",
@@ -127,18 +128,18 @@ Process Requests are used as input to create one or multiple tasks.
                         "type": "string",
                         "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]"
                     },
+                    "determinative": {
+                        "type": "string",
+                        "enum": [ "DepartureTime", "ArrivalTime" ]
+                    },
                     "gender": {
                         "type": "string",
                         "enum": [ "M", "V", "F", "O", "U" ]
                     },
-                    "coordinates": {
-                        "type": "string",
-                        "pattern": "[0-9].[a-zA-Z]?[a-zA-Z][0-9][0-9].[0-9][0-9][a-z]?"
-                    },
                     "location": {
                         "type": "object",
                         "properties": {
-                            "locationId": { "$ref": "#/definitions/coordinates" },
+                            "locationId": { "type": "string" },
                             "name": { "type": "string" },
                             "description": { "type": "string" },
                             "coordinates": { "type": "string" }
@@ -196,7 +197,7 @@ Process Requests are used as input to create one or multiple tasks.
                             "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
                             "location": { "$ref": "#/definitions/location" },
                             "roles": { "type": "array", "items": { "$ref": "#/definitions/role" } },
-                            "competences": { "type": "array", "items": { "$ref": "#/definitions/competence" } },
+                            "competences": { "type": "array", "items": { "$ref": "#/definitions/taskType" } },
                             "isActive": { "type": "boolean" },
                             "actionOptions": {}
                         },
@@ -250,7 +251,6 @@ Process Requests are used as input to create one or multiple tasks.
                     "taskType": { "$ref": "#/definitions/taskType" },
                     "priority": { "$ref": "#/definitions/priority"},
                     "taskMode": { "$ref": "#/definitions/taskMode"},
-                    "taskCanStart": { "type": "boolean" },
                     "transportMode": { "$ref": "#/definitions/transportMode" },
                     "transportType": { "$ref": "#/definitions/transportType" },
                     "processLinks": { "type": "array", "items": {"$ref": "#/definitions/processLinks"} },
@@ -259,6 +259,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "proposedDepartureTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
                     "proposedArrivalTime": { "$ref": "#/definitions/millisecondTimestampZ" },
                     "proposedArrivalTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
+                    "determinative": { "ref": "#/definitions/determinative" },
                     "responseDeadline": { "ref": "#/definitions/millisecondTimestampZ" },
                     "proposedRecurringInterval": { "$ref": "#/definitions/yearsToSecondsDuration" },
                     "startLocation": { "$ref": "#/definitions/location" },
