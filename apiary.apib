@@ -218,16 +218,16 @@ Process Requests are used as input to create one or multiple tasks.
                             { "required" : [ "previousProcessId" ] }
                         ]
                     },
-                    "preconditionState": {
+                    "prerequisiteKey": {
                         "type": "string",
                         "enum": [ "Todo", "Done", "Achieved" ]
                     },
-                    "precondition": {
+                    "prerequisite": {
                         "type": "object",
                         "properties": {
-                            "preconditionId": { "$ref": "#/definitions/guidId" },
-                            "description": { "type": "string" },
-                            "preconditionState": { "$ref": "#/definitions/preconditionState" }
+                            "prerequisiteId": { "$ref": "#/definitions/guidId" },
+                            "prerequisiteKey": { "$ref": "#/definitions/prerequisiteKey" },
+                            "description": { "type": "string" }
                         },
                         "required" : [ "preconditionId" ]
                     },
@@ -265,7 +265,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "startLocation": { "$ref": "#/definitions/location" },
                     "endLocation": { "$ref": "#/definitions/location" },
                     "responseDeadline": { "$ref": "#/definitions/millisecondTimestampZ" },
-                    "preconditions": { "type": "array", "items": {"$ref": "#/definitions/precondition"} },
+                    "prerequisites": { "type": "array", "items": {"$ref": "#/definitions/prerequisite"} },
                     "tasks": { "type": "array", "items": {"$ref": "#/definitions/task"} }
                 }
             }
