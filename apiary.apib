@@ -326,6 +326,7 @@ Tasks contain actions that need to be performed by a person.
                     "location": {
                         "locationId": "3.N02.35",
                         "name": "3.N02.35",
+                        "nameAbbreviated": "wachtzaal",
                         "description" : "http://aorta.intec.ugent.be/ontology/aorta.owl#Nurse Room",
                         "coordinates" : "3-15846"
                     },
@@ -415,7 +416,8 @@ Tasks contain actions that need to be performed by a person.
                 "state": "busy",
                 "priority" : "High",
                 "delayReason" : "",
-                "delayDuration" : ""
+                "delayDuration" : "",
+                "interruptReason" : ""
             }
 
     + Schema
@@ -464,6 +466,7 @@ Tasks contain actions that need to be performed by a person.
                         "properties": {
                             "locationId": { "$ref": "#/definitions/coordinates" },
                             "name": { "type": "string" },
+                            "nameAbbreviated": { "type": "string" },
                             "description": { "type": "string" },
                             "coordinates": { "type": "string" }
                         },
@@ -614,6 +617,7 @@ Tasks contain actions that need to be performed by a person.
                     "actions": { "type": "array", "items": {"$ref": "#/definitions/action"} },
                     "delayDuration": { "type": "string" },
                     "delayReason": { "type": "string" },
+                    "interruptReason" : {"type": "string"}
                 }
             }
         
