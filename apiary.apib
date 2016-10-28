@@ -591,11 +591,10 @@ Tasks contain actions that need to be performed by a person.
                 },
 
                 "type": "object",
-                "required": [ "taskId", "type", "processId", "taskState", "taskType" ],
+                "required": [ "taskId", "processId", "taskState", "taskType" ],
                 "properties": {
                     "taskId": { "$ref": "#/definitions/guidId" },
                     "processId": { "$ref": "#/definitions/guidId" },
-                    "type": { "$ref": "#/definitions/type" },
                     "description": { "type": "string" },
                     "taskState": { "$ref": "#/definitions/taskState"},
                     "creationTime": { "$ref": "#/definitions/millisecondTimestampZ" },
