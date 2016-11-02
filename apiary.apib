@@ -311,7 +311,7 @@ Tasks contain actions that need to be performed by a person.
                 "taskId": "6b73b7cc-1221-44ad-93cb-38f4732350b5",
                 "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
                 "creationTime": "2016-05-25T15:11:32.366Z",
-                "creator": "Scheduling Application",
+                "creator": "Context Engine",
                 "taskType": "PatientTransport",
                 "subject": {
                     "personId": "00000000-0000-0000-0000-000000000201",
@@ -326,7 +326,6 @@ Tasks contain actions that need to be performed by a person.
                     "location": {
                         "locationId": "3.N02.35",
                         "name": "3.N02.35",
-                        "nameAbbreviated": "wachtzaal",
                         "description" : "http://aorta.intec.ugent.be/ontology/aorta.owl#Nurse Room",
                         "coordinates" : "3-15846"
                     },
@@ -352,13 +351,13 @@ Tasks contain actions that need to be performed by a person.
                     "actionType": "Pickup",
                     "actionOptions": [{ 
                         "actionOptionId" : "00000000-0000-0000-0000-000000000001",
-                        "type" : "carrier",
-                        "value" : "bed",
+                        "type" : "Carrier",
+                        "value" : "Bed",
                         "description" : ""
                     },{
                         "actionOptionId":"00000000-0000-0000-0000-000000000002", 
-                        "type" : "warning", 
-                        "value" : "gloves", 
+                        "type" : "Warning", 
+                        "value" : "Gloves", 
                         "description" : "Voorzorgsmaatregelen handschoenen"
                     }]
                     ,
@@ -411,9 +410,10 @@ Tasks contain actions that need to be performed by a person.
                         "description": "For this transport a wheelchair is needed"
                     }],
                     "description": "Pickup patient X",
-                    "state": "busy"
+                    "state": "Busy"
                 }],
-                "state": "busy",
+                "state": "Busy",
+                "description":"",
                 "priority" : "High",
                 "delayReason" : "",
                 "delayDuration" : "",
@@ -462,7 +462,6 @@ Tasks contain actions that need to be performed by a person.
                         "properties": {
                             "locationId": { "$ref": "#/definitions/coordinates" },
                             "name": { "type": "string" },
-                            "nameAbbreviated": { "type": "string" },
                             "description": { "type": "string" },
                             "coordinates": { "type": "string" }
                         },
@@ -495,7 +494,7 @@ Tasks contain actions that need to be performed by a person.
                             "type": { "type": "string", "enum": [ "OazisPatientId", "NFC" ] },
                             "value": { "type": "string" }
                         },
-                        "required": [ "identificationMethodId", "type" ]
+                        "required": [ "identificationMethodId", "type", "value" ]
                     },
                     "person": {
                         "type": "object",
@@ -503,50 +502,25 @@ Tasks contain actions that need to be performed by a person.
                             "personId": { "$ref": "#/definitions/guidId" },
                             "firstName": { "type": "string" },
                             "lastName": { "type": "string" },
-                            "birthDate": { "$ref": "#/definitions/millisecondTimestampZ" },
-                            "gender": { "$ref": "#/definitions/gender" },
+                            "birthDate": { "$ref": "#/definitions/millisecondTimestampZ"}
                             "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
                             "location": { "$ref": "#/definitions/location" },
                             "roles": { "type": "array", "items": { "$ref": "#/definitions/role" } },
                             "competences": { "type": "array", "items": { "$ref": "#/definitions/competence" } },
-                            "isActive": { "type": "boolean" },
-                            "actionOptions": {}
+                            "isActive": { "type": "boolean" }
                         },
                         "anyOf" : [
                             { "required" : [ "personId", "firstName", "lastName", "birthDate", "gender" ] },
                             { "required" : [ "personId", "identificationMethods" ] }
                         ]
                     },
-                    "processLinks": {
-                        "type": "object",
-                        "properties": {
-                            "nextProcessId": { "$ref": "#/definitions/guidId" },
-                            "previousProcessId": { "$ref": "#/definitions/guidId" },
-                            "requiredPreviousProcessState": { "$ref": "#/definitions/taskState" }
-                        },
-                        "anyOf" : [
-                            { "required" : [ "nextProcessId" ] },
-                            { "required" : [ "previousProcessId" ] }
-                        ]
-                    },
-                    "preconditionState": {
-                        "type": "string",
-                        "enum": [ "Todo", "Done", "Achieved" ]
-                    },
                     "precondition": {
                         "type": "object",
                         "properties": {
                             "preconditionId": { "$ref": "#/definitions/guidId" },
                             "description": { "type": "string" },
-                            "preconditionState": { "$ref": "#/definitions/preconditionState" }
                         },
                         "required" : [ "preconditionId" ]
-                    },
-                    "task": {
-                        "type": "object",
-                        "properties": {
-                            "taskId": { "$ref": "#/definitions/guidId" }
-                        }
                     },
                     "competence": {
                         "type": "string",
@@ -554,7 +528,7 @@ Tasks contain actions that need to be performed by a person.
                     },
                     "deviceType": {
                         "type": "string",
-                        "enum": [ "Smart watch" ]
+                        "enum": [ "Smart watch", "Terminal" ]
                     },
                     "device": {
                         "type": "object",
@@ -585,23 +559,41 @@ Tasks contain actions that need to be performed by a person.
                     "action": {
                         "type": "object",
                         "properties": {
-                            "actionId": { "$ref": "#/definitions/guidId" }
-                        }
-                    }
+                            "actionId": { "$ref": "#/definitions/guidId" },
+                            "actionType": { "type": "string" },
+                            "actionOptions": null,
+                            "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
+                            "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
+                            "effectiveStartTime": { "$ref": "#/definitions/millisecondTimestampZ"},
+                            "effectiveEndTime": { "$ref": "#/definitions/millisecondTimestampZ"},
+                            "preconditions": { "$ref": "#/definitions/precondition"},
+                            "state": { "$ref": "#/definitions/state" },
+                            "description": { "type": "string" }
+                    },
+                    "actionOption":{
+                        "type": "object",
+                        "properties": {
+                            "actionOptionId": { "$ref": "#/definitions/guidId" },
+                            "type": { "type": "string" },
+                            "value": { "type": "string" },
+                            "description": { "type": "string" }
+                            }
+                        
+                    },
+                    "actionOptions": { "type": "array", "items": {"$ref": "#/definitions/actionOption"} }
                 },
 
                 "type": "object",
-                "required": [ "taskId", "processId", "taskState", "taskType" ],
+                "required": [ "taskId", "processId", "state", "taskType" ],
                 "properties": {
                     "taskId": { "$ref": "#/definitions/guidId" },
                     "processId": { "$ref": "#/definitions/guidId" },
                     "description": { "type": "string" },
-                    "taskState": { "$ref": "#/definitions/taskState"},
+                    "state": { "$ref": "#/definitions/state"},
                     "creationTime": { "$ref": "#/definitions/millisecondTimestampZ" },
                     "creator": { "$ref": "#/definitions/creator" },
                     "taskType": { "$ref": "#/definitions/taskType" },
                     "priority": { "$ref": "#/definitions/priority"},
-                    "taskMode": { "$ref": "#/definitions/taskMode"},
                     "subject": { "$ref": "#/definitions/person" },
                     "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
                     "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
