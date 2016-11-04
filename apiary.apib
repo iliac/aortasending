@@ -412,12 +412,11 @@ Tasks contain actions that need to be performed by a person.
                     "description": "Pickup patient X",
                     "state": "Busy"
                 }],
-                "state": "Busy",
+                "taskState": "Busy",
                 "description":"",
                 "priority" : "High",
-                "delayReason" : "",
                 "delayDuration" : "",
-                "interruptReason" : ""
+                "taskStateReason" : ""
             }
 
     + Schema
@@ -471,7 +470,7 @@ Tasks contain actions that need to be performed by a person.
                         "type": "string",
                         "enum": [ "Aorta Message Broker", "Task Manager", "Notification Engine", "Context Engine", "Scheduling Application", "Wearable" ]
                     },
-                    "state": {
+                    "taskState": {
                         "type": "string",
                         "enum": [ "Requested", "ToSchedule", "Scheduled", "Assigned", "Notified", "Accepted", "InProgress", "Refused", "Timeout", "Unreachable", "Interrupted", "Delayed", "Finished", "Cancelled" ]
                     },
@@ -589,7 +588,7 @@ Tasks contain actions that need to be performed by a person.
                     "taskId": { "$ref": "#/definitions/guidId" },
                     "processId": { "$ref": "#/definitions/guidId" },
                     "description": { "type": "string" },
-                    "state": { "$ref": "#/definitions/state"},
+                    "taskState": { "$ref": "#/definitions/taskState"},
                     "creationTime": { "$ref": "#/definitions/millisecondTimestampZ" },
                     "creator": { "$ref": "#/definitions/creator" },
                     "taskType": { "$ref": "#/definitions/taskType" },
@@ -602,9 +601,8 @@ Tasks contain actions that need to be performed by a person.
                     "responseDeadline": { "$ref": "#/definitions/millisecondTimestampZ" },
                     "preconditions": { "type": "array", "items": {"$ref": "#/definitions/precondition"} },
                     "actions": { "type": "array", "items": {"$ref": "#/definitions/action"} },
-                    "delayDuration": { "type": "string" },
-                    "delayReason": { "type": "string" },
-                    "interruptReason" : {"type": "string"}
+                    "delayDuration": {"type": "string"},
+                    "taskStateReason" : {"type": "string"}
                 }
             }
         
