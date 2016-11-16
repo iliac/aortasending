@@ -21,7 +21,8 @@ The collection of messages that deals with Process Requests.
 Process Requests are used as input to create one or multiple tasks.
 
 **POST requests**
- - First POST request: This message creates a process request.
+ - First POST request: This message creates a process request (PatientTransport).
+ - Second POST request: This message creates a process request (GoodsTransport).
 
 **POST responses**
  - First POST response: HTTP 1/1 200 OK or any other HTTP Status Code 2xx. AortaMessageBroker will consider the message correctly treated and move to the next message.
@@ -67,9 +68,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "birthDate": "1961-05-21",
                     "gender": "V",
                     "location": {
-                        "locationId": "2.W01.15a",
-                        "name": "The red one",
-                        "description": "Wachtruimte NKO"
+                        "locationId": "2.W01.15a"
                     },
                     "roles": ["Patient"]
                 }],
@@ -81,14 +80,10 @@ Process Requests are used as input to create one or multiple tasks.
                 "determinative": "ArrivalTime",
                 "responseDeadline": "2016-03-11T13:50:00.000Z",
                 "startLocation": {
-                    "locationId": "2.W01.15a",
-                    "description": "The red one",
-                    "name": "Wachtruimte NKO"
+                    "locationId": "2.W01.15a"
                 },
                 "endLocation": {
-                    "locationId": "1.W01.17a",
-                    "description": "The blue one",
-                    "name": "ReceptionBooth1"
+                    "locationId": "1.W01.17a"
                 },
                 "tasks": [{
                     "taskId": "76f8f381-4dd6-4e1d-a591-8a4d49ac0bce"
