@@ -45,7 +45,6 @@ Process Requests are used as input to create one or multiple tasks.
     
             {
                 "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
-                "type": "ProcessRequest",
                 "description": "Pick up Patient X",
                 "taskState": "Requested",
                 "creationTime": "2016-03-10T12:34:56.123Z",
@@ -96,10 +95,6 @@ Process Requests are used as input to create one or multiple tasks.
                 "$schema": "http://json-schema.org/draft-04/schema#",
 
                 "definitions": {
-                    "type": {
-                        "type": "string",
-                        "enum": [ "ProcessRequest", "Task", "Action" ]
-                    },
                     "guidId": {
                         "type": "string",
                         "pattern": "[0-9A-Fa-f]{8}[-]?([0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}"
