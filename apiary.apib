@@ -589,7 +589,7 @@ Tasks contain actions that need to be performed by a person.
                             "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
                             "effectiveStartTime": { "$ref": "#/definitions/millisecondTimestampZ"},
                             "effectiveEndTime": { "$ref": "#/definitions/millisecondTimestampZ"},
-                            "preconditions": { "$ref": "#/definitions/precondition"},
+                            "preconditions": { "type": "array","$ref": "#/definitions/precondition"},
                             "state": { "$ref": "#/definitions/state" },
                             "description": { "type": "string" }
                     },
