@@ -196,6 +196,39 @@ Process Requests are used as input to create one or multiple tasks.
                             { "required" : [ "personId", "identificationMethods" ] }
                         ]
                     },
+                    "itemType": {
+                        "type": "string",
+                        "enum": [
+                            "Wheelchair"
+                        ]
+                    },
+                    "item": {
+                        "type": "object",
+                        "properties": {
+                            "itemId": {
+                                "$ref": "#/definitions/guidId"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "identificationMethods": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/identificationMethod"
+                                }
+                            },
+                            "location": {
+                                "$ref": "#/definitions/location"
+                            },
+                            "itemType": {
+                                "$ref": "#/definitions/itemType"
+                            }
+                        },
+                        "required": [
+                            "itemId",
+                            "identificationMethods"
+                        ]
+                    },
                     "processLinks": {
                         "type": "object",
                         "properties": {
@@ -245,6 +278,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "transportType": { "$ref": "#/definitions/transportType" },
                     "processLinks": { "type": "array", "items": {"$ref": "#/definitions/processLinks"} },
                     "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
+                    "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/itemAdd"} },
                     "proposedDepartureTime": { "$ref": "#/definitions/millisecondTimestampZ" },
                     "proposedDepartureTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
                     "proposedArrivalTime": { "$ref": "#/definitions/millisecondTimestampZ" },
