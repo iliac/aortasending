@@ -331,11 +331,11 @@ Tasks contain actions that need to be performed by a person.
 
     + Body
     
-            {
+           {
                 "taskId": "6b73b7cc-1221-44ad-93cb-38f4732350b5",
                 "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
                 "creationTime": "2016-05-25T15:11:32.366Z",
-                "creator": "Context Engine",
+                "creator": "Context Layer",
                 "taskType": "PatientTransport",
                 "subject": {
                     "personId": "00000000-0000-0000-0000-000000000201",
@@ -429,14 +429,14 @@ Tasks contain actions that need to be performed by a person.
                     }],
                     "effectiveStartTime": "2016-05-25T15:11:32.382Z",
                     "effectiveEndTime": "2016-05-25T15:11:32.382Z",
+                    "description": "Pickup patient X",
+                    "state": "Accepted",
                     "preconditions": [{
                         "preconditionId": "87e09b2f-c154-4310-a4f5-d3c676fb28be",
                         "description": "For this transport a wheelchair is needed"
-                    }],
-                    "description": "Pickup patient X",
-                    "state": "Busy"
+                    }]
                 }],
-                "taskState": "Busy",
+                "taskState": "Accepted",
                 "description":"",
                 "priority" : "High",
                 "delayDuration" : "",
@@ -445,192 +445,457 @@ Tasks contain actions that need to be performed by a person.
 
     + Schema
     
-            {
+           {
                 "$schema": "http://json-schema.org/draft-04/schema#",
-
-                "definitions": {
-                    "guidId": {
-                        "type": "string",
-                        "pattern": "[0-9A-Fa-f]{8}[-]?([0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}"
-                    },
-                    "millisecondTimestampZ": {
-                        "type": "string",
-                        "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}Z"
-                    },
-                    "yearsToSecondsDuration": {
-                        "type": "string",
-                        "pattern": "P((([0-9]*.?[0-9]*)Y)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)W)?(([0-9]*.?[0-9]*)D)?)?(T(([0-9]*.?[0-9]*)H)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)S)?)?"
-                    },
-                    "millisecondTimeWindowZ": {
-                        "type": "object",
-                        "properties": {
-                            "timeWindowStart": { "ref": "#/definitions/millisecondTimestampZ" },
-                            "timeWindowEnd": { "ref": "#/definitions/millisecondTimestampZ" }
-                        }
-                    },
-                    "dateOnly": {
-                        "type": "string",
-                        "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]"
-                    },
-                    "gender": {
-                        "type": "string",
-                        "enum": [ "M", "V", "F", "O", "U" ]
-                    },
-                    "coordinates": {
-                        "type": "string",
-                        "pattern": "[0-9].[a-zA-Z]?[a-zA-Z][0-9][0-9].[0-9][0-9][a-z]?"
-                    },
-                    "location": {
-                        "type": "object",
-                        "properties": {
-                            "locationId": { "$ref": "#/definitions/coordinates" },
-                            "name": { "type": "string" },
-                            "description": { "type": "string" },
-                            "coordinates": { "type": "string" }
-                        },
-                        "required": [ "locationId" ]
-                    },
-                    "creator": {
-                        "type": "string",
-                        "enum": [ "Aorta Message Broker", "Task Manager", "Notification Engine", "Context Layer", "Scheduling Application", "Wearable" ]
-                    },
-                    "taskState": {
-                        "type": "string",
-                        "enum": [ "Requested", "ToSchedule", "Scheduled", "Assigned", "Notified", "Accepted", "InProgress", "Refused", "Timeout", "Unreachable", "Interrupted", "Delayed", "Finished", "Cancelled" ]
-                    },
-                    "priority": {
-                        "type": "string",
-                        "enum": [ "Urgent", "High", "Normal", "Low" ]
-                    },
-                    "taskType": {
-                        "type": "string",
-                        "enum": [ "PatientTransport", "GoodsTransport" ]
-                    },
-                    "role": {
-                        "type": "string",
-                        "enum": [ "Nurse", "Doctor", "Patient", "Technician", "Logistics", "Administrative" ]
-                    },
-                    "identificationMethod": {
-                        "type": "object",
-                        "properties": {
-                            "identificationMethodId": { "$ref": "#/definitions/guidId" },
-                            "type": { "type": "string", "enum": [ "StaffId", "NFC" ] },
-                            "value": { "type": "string" }
-                        },
-                        "required": [ "identificationMethodId", "type", "value" ]
-                    },
-                    "person": {
-                        "type": "object",
-                        "properties": {
-                            "personId": { "$ref": "#/definitions/guidId" },
-                            "firstName": { "type": "string" },
-                            "lastName": { "type": "string" },
-                            "birthDate": { "$ref": "#/definitions/millisecondTimestampZ"}
-                            "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
-                            "location": { "$ref": "#/definitions/location" },
-                            "roles": { "type": "array", "items": { "$ref": "#/definitions/role" } },
-                            "competences": { "type": "array", "items": { "$ref": "#/definitions/competence" } },
-                            "isActive": { "type": "boolean" }
-                        },
-                        "anyOf" : [
-                            { "required" : [ "personId", "firstName", "lastName", "birthDate", "gender" ] },
-                            { "required" : [ "personId", "identificationMethods" ] }
-                        ]
-                    },
-                    "precondition": {
-                        "type": "object",
-                        "properties": {
-                            "preconditionId": { "$ref": "#/definitions/guidId" },
-                            "description": { "type": "string" },
-                        },
-                        "required" : [ "preconditionId" ]
-                    },
-                    "competence": {
-                        "type": "string",
-                        "enum": [ "Nurse","Logistic","Patient" ]
-                    },
-                    "deviceType": {
-                        "type": "string",
-                        "enum": [ "Smart watch", "Terminal" ]
-                    },
-                    "device": {
-                        "type": "object",
-                        "properties": {
-                            "deviceId": { "$ref": "#/definitions/guidId" },
-                            "description": { "type": "string" },
-                            "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
-                            "location": { "$ref": "#/definitions/location" },
-                            "deviceType": { "$ref": "#/definitions/deviceType" }
-                        },
-                        "required" : [ "deviceId", "identificationMethods" ]
-                    },
-                    "itemType": {
-                        "type": "string",
-                        "enum": [ "Wheelchair" ]
-                    },
-                    "item": {
-                        "type": "object",
-                        "properties": {
-                            "itemId": { "$ref": "#/definitions/guidId" },
-                            "description": { "type": "string" },
-                            "identificationMethods": { "type": "array", "items": {"$ref": "#/definitions/identificationMethod"} },
-                            "location": { "$ref": "#/definitions/location" },
-                            "itemType": { "$ref": "#/definitions/itemType" }
-                        },
-                        "required" : [ "itemId", "identificationMethods" ]
-                    },
-                    "actionOption":{
-                        "type": "object",
-                        "properties": {
-                            "actionOptionId": { "$ref": "#/definitions/guidId" },
-                            "type": { "type": "string" },
-                            "value": { "type": "string" },
-                            "description": { "type": "string" }
-                            }
-                    },
-                    "state": {
-                        "type": "string",
-                        "enum": [ "Requested", "ToSchedule", "Scheduled", "Assigned", "Notified", "Accepted", "InProgress", "Refused", "Timeout", "Unreachable", "Interrupted", "Delayed", "Finished", "Cancelled" ]
-                    },
-                    "action": {
-                        "type": "object",
-                        "properties": {
-                            "actionId": { "$ref": "#/definitions/guidId" },
-                            "actionType": { "type": "string" },
-                            "actionOptions": { "type": "array", "items": {"$ref": "#/definitions/actionOption"} },
-                            "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
-                            "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
-                            "effectiveStartTime": { "$ref": "#/definitions/millisecondTimestampZ"},
-                            "effectiveEndTime": { "$ref": "#/definitions/millisecondTimestampZ"},
-                            "preconditions": { "type": "array","$ref": "#/definitions/precondition"},
-                            "state": { "$ref": "#/definitions/state" },
-                            "description": { "type": "string" }
-                    }
-                },
-
-                "type": "object",
-                "required": [ "taskId", "processId", "taskState", "taskType" ],
-                "properties": {
-                    "taskId": { "$ref": "#/definitions/guidId" },
-                    "processId": { "$ref": "#/definitions/guidId" },
-                    "description": { "type": "string" },
-                    "taskState": { "$ref": "#/definitions/taskState"},
-                    "creationTime": { "$ref": "#/definitions/millisecondTimestampZ" },
-                    "creator": { "$ref": "#/definitions/creator" },
-                    "taskType": { "$ref": "#/definitions/taskType" },
-                    "priority": { "$ref": "#/definitions/priority"},
-                    "subject": { "$ref": "#/definitions/person" },
-                    "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
-                    "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
-                    "startLocation": { "$ref": "#/definitions/location" },
-                    "endLocation": { "$ref": "#/definitions/location" },
-                    "responseDeadline": { "$ref": "#/definitions/millisecondTimestampZ" },
-                    "preconditions": { "type": "array", "items": {"$ref": "#/definitions/precondition"} },
-                    "actions": { "type": "array", "items": {"$ref": "#/definitions/action"} },
-                    "delayDuration": {"type": "string"},
-                    "taskStateReason" : {"type": "string"}
-                }
+          "type": "object",
+          "required": [
+            "taskId",
+            "processId",
+            "taskState",
+            "taskType"
+          ],
+          "properties": {
+            "taskId": {
+              "$ref": "#/definitions/guidId"
+            },
+            "processId": {
+              "$ref": "#/definitions/guidId"
+            },
+            "description": {
+              "type": "string"
+            },
+            "taskState": {
+              "$ref": "#/definitions/taskState"
+            },
+            "creationTime": {
+              "$ref": "#/definitions/millisecondTimestampZ"
+            },
+            "creator": {
+              "$ref": "#/definitions/creator"
+            },
+            "taskType": {
+              "$ref": "#/definitions/taskType"
+            },
+            "priority": {
+              "$ref": "#/definitions/priority"
+            },
+            "subject": {
+              "$ref": "#/definitions/person"
+            },
+            "personObjects": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/person"
+              }
+            },
+            "itemObjects": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/item"
+              }
+            },
+            "startLocation": {
+              "$ref": "#/definitions/location"
+            },
+            "endLocation": {
+              "$ref": "#/definitions/location"
+            },
+            "responseDeadline": {
+              "$ref": "#/definitions/millisecondTimestampZ"
+            },
+            "preconditions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/precondition"
+              }
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/action"
+              }
+            },
+            "delayDuration": {
+              "type": "string"
+            },
+            "taskStateReason": {
+              "type": "string"
             }
+          },
+          "definitions": {
+            "guidId": {
+              "type": "string",
+              "pattern": "[0-9A-Fa-f]{8}[-]?([0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}"
+            },
+            "millisecondTimestampZ": {
+              "type": "string",
+              "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}Z"
+            },
+            "yearsToSecondsDuration": {
+              "type": "string",
+              "pattern": "P((([0-9]*.?[0-9]*)Y)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)W)?(([0-9]*.?[0-9]*)D)?)?(T(([0-9]*.?[0-9]*)H)?(([0-9]*.?[0-9]*)M)?(([0-9]*.?[0-9]*)S)?)?"
+            },
+            "millisecondTimeWindowZ": {
+              "type": "object",
+              "properties": {
+                "timeWindowStart": {
+                  "ref": "#/definitions/millisecondTimestampZ"
+                },
+                "timeWindowEnd": {
+                  "ref": "#/definitions/millisecondTimestampZ"
+                }
+              }
+            },
+            "dateOnly": {
+              "type": "string",
+              "pattern": "[12][0-9]{3}-[01][0-9]-[0-3][0-9]"
+            },
+            "gender": {
+              "type": "string",
+              "enum": [
+                "M",
+                "V",
+                "F",
+                "O",
+                "U"
+              ]
+            },
+            "coordinates": {
+              "type": "string",
+              "pattern": "[0-9].[a-zA-Z]?[a-zA-Z][0-9][0-9].[0-9][0-9][a-z]?"
+            },
+            "location": {
+              "type": "object",
+              "properties": {
+                "locationId": {
+                  "$ref": "#/definitions/coordinates"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "coordinates": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "locationId"
+              ]
+            },
+            "creator": {
+              "type": "string",
+              "enum": [
+                "Aorta Message Broker",
+                "Task Manager",
+                "Notification Engine",
+                "Context Layer",
+                "Scheduling Application",
+                "Wearable"
+              ]
+            },
+            "taskState": {
+              "type": "string",
+              "enum": [
+                "Requested",
+                "ToSchedule",
+                "Scheduled",
+                "Assigned",
+                "Notified",
+                "Accepted",
+                "InProgress",
+                "Refused",
+                "Timeout",
+                "Unreachable",
+                "Interrupted",
+                "Delayed",
+                "Finished",
+                "Cancelled"
+              ]
+            },
+            "priority": {
+              "type": "string",
+              "enum": [
+                "Urgent",
+                "High",
+                "Normal",
+                "Low"
+              ]
+            },
+            "taskType": {
+              "type": "string",
+              "enum": [
+                "PatientTransport",
+                "GoodsTransport"
+              ]
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "Nurse",
+                "Doctor",
+                "Patient",
+                "Technician",
+                "Logistics",
+                "Administrative"
+              ]
+            },
+            "identificationMethod": {
+              "type": "object",
+              "properties": {
+                "identificationMethodId": {
+                  "$ref": "#/definitions/guidId"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "StaffId",
+                    "NFC"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "identificationMethodId",
+                "type",
+                "value"
+              ]
+            },
+            "person": {
+              "type": "object",
+              "properties": {
+                "personId": {
+                  "$ref": "#/definitions/guidId"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "birthDate": {
+                  "$ref": "#/definitions/millisecondTimestampZ"
+                },
+                "identificationMethods": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/identificationMethod"
+                  }
+                },
+                "location": {
+                  "$ref": "#/definitions/location"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/role"
+                  }
+                },
+                "competences": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/competence"
+                  }
+                },
+                "isActive": {
+                  "type": "boolean"
+                }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "personId",
+                    "firstName",
+                    "lastName",
+                    "birthDate",
+                    "gender"
+                  ]
+                },
+                {
+                  "required": [
+                    "personId",
+                    "identificationMethods"
+                  ]
+                }
+              ]
+            },
+            "precondition": {
+              "type": "object",
+              "properties": {
+                "preconditionId": {
+                  "$ref": "#/definitions/guidId"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "preconditionId"
+              ]
+            },
+            "competence": {
+              "type": "string",
+              "enum": [
+                "Nurse",
+                "Logistic",
+                "Patient"
+              ]
+            },
+            "deviceType": {
+              "type": "string",
+              "enum": [
+                "Smart watch",
+                "Terminal"
+              ]
+            },
+            "device": {
+              "type": "object",
+              "properties": {
+                "deviceId": {
+                  "$ref": "#/definitions/guidId"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "identificationMethods": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/identificationMethod"
+                  }
+                },
+                "location": {
+                  "$ref": "#/definitions/location"
+                },
+                "deviceType": {
+                  "$ref": "#/definitions/deviceType"
+                }
+              },
+              "required": [
+                "deviceId",
+                "identificationMethods"
+              ]
+            },
+            "itemType": {
+              "type": "string",
+              "enum": [
+                "Wheelchair"
+              ]
+            },
+            "item": {
+              "type": "object",
+              "properties": {
+                "itemId": {
+                  "$ref": "#/definitions/guidId"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "identificationMethods": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/identificationMethod"
+                  }
+                },
+                "location": {
+                  "$ref": "#/definitions/location"
+                },
+                "itemType": {
+                  "$ref": "#/definitions/itemType"
+                }
+              },
+              "required": [
+                "itemId",
+                "identificationMethods"
+              ]
+            },
+            "actionOption": {
+              "type": "object",
+              "properties": {
+                "actionOptionId": {
+                  "$ref": "#/definitions/guidId"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "Requested",
+                "ToSchedule",
+                "Scheduled",
+                "Assigned",
+                "Notified",
+                "Accepted",
+                "InProgress",
+                "Refused",
+                "Timeout",
+                "Unreachable",
+                "Interrupted",
+                "Delayed",
+                "Finished",
+                "Cancelled"
+              ]
+            },
+            "action": {
+              "type": "object",
+              "properties": {
+                "actionId": {
+                  "$ref": "#/definitions/guidId"
+                },
+                "actionType": {
+                  "type": "string"
+                },
+                "actionOptions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/actionOption"
+                  }
+                },
+                "personObjects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/person"
+                  }
+                },
+                "itemObjects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/item"
+                  }
+                },
+                "effectiveStartTime": {
+                  "$ref": "#/definitions/millisecondTimestampZ"
+                },
+                "effectiveEndTime": {
+                  "$ref": "#/definitions/millisecondTimestampZ"
+                },
+                "preconditions": {
+                  "type": "array",
+                  "items": {
+                  "$ref": "#/definitions/precondition"
+                  }
+                },
+                "state": {
+                  "$ref": "#/definitions/state"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
         
 + Response 200 (application/json)
 
