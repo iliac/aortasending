@@ -579,20 +579,6 @@ Tasks contain actions that need to be performed by a person.
                         },
                         "required" : [ "itemId", "identificationMethods" ]
                     },
-                    "action": {
-                        "type": "object",
-                        "properties": {
-                            "actionId": { "$ref": "#/definitions/guidId" },
-                            "actionType": { "type": "string" },
-                            "actionOptions": null,
-                            "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
-                            "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
-                            "effectiveStartTime": { "$ref": "#/definitions/millisecondTimestampZ"},
-                            "effectiveEndTime": { "$ref": "#/definitions/millisecondTimestampZ"},
-                            "preconditions": { "type": "array","$ref": "#/definitions/precondition"},
-                            "state": { "$ref": "#/definitions/state" },
-                            "description": { "type": "string" }
-                    },
                     "actionOption":{
                         "type": "object",
                         "properties": {
@@ -601,9 +587,25 @@ Tasks contain actions that need to be performed by a person.
                             "value": { "type": "string" },
                             "description": { "type": "string" }
                             }
-                        
                     },
-                    "actionOptions": { "type": "array", "items": {"$ref": "#/definitions/actionOption"} }
+                    "state": {
+                        "type": "string",
+                        "enum": [ "Requested", "ToSchedule", "Scheduled", "Assigned", "Notified", "Accepted", "InProgress", "Refused", "Timeout", "Unreachable", "Interrupted", "Delayed", "Finished", "Cancelled" ]
+                    },
+                    "action": {
+                        "type": "object",
+                        "properties": {
+                            "actionId": { "$ref": "#/definitions/guidId" },
+                            "actionType": { "type": "string" },
+                            "actionOptions": { "type": "array", "items": {"$ref": "#/definitions/actionOption"} },
+                            "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
+                            "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
+                            "effectiveStartTime": { "$ref": "#/definitions/millisecondTimestampZ"},
+                            "effectiveEndTime": { "$ref": "#/definitions/millisecondTimestampZ"},
+                            "preconditions": { "type": "array","$ref": "#/definitions/precondition"},
+                            "state": { "$ref": "#/definitions/state" },
+                            "description": { "type": "string" }
+                    }
                 },
 
                 "type": "object",
