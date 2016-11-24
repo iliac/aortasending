@@ -492,7 +492,7 @@ Tasks contain actions that need to be performed by a person.
                     },
                     "creator": {
                         "type": "string",
-                        "enum": [ "Aorta Message Broker", "Task Manager", "Notification Engine", "Context Engine", "Scheduling Application", "Wearable" ]
+                        "enum": [ "Aorta Message Broker", "Task Manager", "Notification Engine", "Context Layer", "Scheduling Application", "Wearable" ]
                     },
                     "taskState": {
                         "type": "string",
@@ -514,7 +514,7 @@ Tasks contain actions that need to be performed by a person.
                         "type": "object",
                         "properties": {
                             "identificationMethodId": { "$ref": "#/definitions/guidId" },
-                            "type": { "type": "string", "enum": [ "OazisPatientId", "NFC" ] },
+                            "type": { "type": "string", "enum": [ "StaffId", "NFC" ] },
                             "value": { "type": "string" }
                         },
                         "required": [ "identificationMethodId", "type", "value" ]
@@ -547,7 +547,7 @@ Tasks contain actions that need to be performed by a person.
                     },
                     "competence": {
                         "type": "string",
-                        "enum": [ "CareTransport", "LogisticTransport" ]
+                        "enum": [ "Nurse","Logistic","Patient" ]
                     },
                     "deviceType": {
                         "type": "string",
@@ -607,7 +607,7 @@ Tasks contain actions that need to be performed by a person.
                 },
 
                 "type": "object",
-                "required": [ "taskId", "processId", "state", "taskType" ],
+                "required": [ "taskId", "processId", "taskState", "taskType" ],
                 "properties": {
                     "taskId": { "$ref": "#/definitions/guidId" },
                     "processId": { "$ref": "#/definitions/guidId" },
