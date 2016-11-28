@@ -262,11 +262,9 @@ Process Requests are used as input to create one or multiple tasks.
                     }
                 },
 
-                "type": "object",
                 "required": [ "processId", "type", "taskState", "taskType" ],
                 "properties": {
                     "processId": { "$ref": "#/definitions/guidId" },
-                    "type": { "$ref": "#/definitions/type" },
                     "description": { "type": "string" },
                     "taskState": { "$ref": "#/definitions/taskState"},
                     "creationTime": { "$ref": "#/definitions/millisecondTimestampZ" },
@@ -278,7 +276,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "transportType": { "$ref": "#/definitions/transportType" },
                     "processLinks": { "type": "array", "items": {"$ref": "#/definitions/processLinks"} },
                     "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
-                    "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/itemAdd"} },
+                    "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
                     "proposedDepartureTime": { "$ref": "#/definitions/millisecondTimestampZ" },
                     "proposedDepartureTimeWindow": { "$ref": "#/definitions/millisecondTimeWindowZ" },
                     "proposedArrivalTime": { "$ref": "#/definitions/millisecondTimestampZ" },
