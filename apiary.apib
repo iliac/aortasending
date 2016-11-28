@@ -40,54 +40,6 @@ Process Requests are used as input to create one or multiple tasks.
 ### Create a Process Request [POST]
 
 + Request (application/json)
-
-    + Body
-    
-            {
-                "processId": "aeb7d11b-5588-4de7-822e-bd4a94da4df7",
-                "description": "Pick up Patient X",
-                "taskState": "Requested",
-                "creationTime": "2016-03-10T12:34:56.123Z",
-                "creator": "Task Manager",
-                "taskType": "PatientTransport",
-                "priority": "Normal",
-                "transportMode": "Rolstoel",
-                "transportType": "Terug",
-                "processLinks": {
-                    "nextProcessId": "7278b5d1-afb8-4f4b-8141-615dd283c5d4"
-                },
-                "personObjects": [{
-                    "personId": "24a87862-0e8d-4e5e-8740-da1c818d843f",
-                    "identificationMethods": [
-                        { "identificationMethod": "OazisPatientId", "identificationKey": "12345678" },
-                        { "identificationMethod": "NFC", "identificationKey": "fabdfa2b-16e8-455b-8b60-6b2ea5bffbde" }
-                    ],
-                    "firstName": "Goedele",
-                    "lastName": "Bruynooghe",
-                    "birthDate": "1961-05-21",
-                    "gender": "V",
-                    "location": {
-                        "locationId": "2.W01.15a"
-                    },
-                    "roles": ["Patient"]
-                }],
-                "proposedArrivalTime": "2016-03-11T13:30:00.000Z",
-                "proposedArrivalTimeWindow": {
-                    "timeWindowStart": "2016-03-11T13:30:00.000Z",
-                    "timeWindowEnd": "2016-03-11T13:50:00.000Z"
-                },
-                "determinative": "ArrivalTime",
-                "responseDeadline": "2016-03-11T13:50:00.000Z",
-                "startLocation": {
-                    "locationId": "2.W01.15a"
-                },
-                "endLocation": {
-                    "locationId": "1.W01.17a"
-                },
-                "tasks": [{
-                    "taskId": "76f8f381-4dd6-4e1d-a591-8a4d49ac0bce"
-                }]
-            }
             
     + Schema
     
@@ -274,7 +226,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "taskMode": { "$ref": "#/definitions/taskMode"},
                     "transportMode": { "$ref": "#/definitions/transportMode" },
                     "transportType": { "$ref": "#/definitions/transportType" },
-                    "processLinks": { "type": "array", "items": {"$ref": "#/definitions/processLinks"} },
+                    "processLinks": { "$ref": "#/definitions/processLinks" },
                     "personObjects": { "type": "array", "items": {"$ref": "#/definitions/person"} },
                     "itemObjects": { "type": "array", "items": {"$ref": "#/definitions/item"} },
                     "proposedDepartureTime": { "$ref": "#/definitions/millisecondTimestampZ" },
