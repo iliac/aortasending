@@ -40,9 +40,9 @@ Process Requests are used as input to create one or multiple tasks.
 ### Create a Process Request [POST]
 
 + Request (application/json)
-            
+
     + Schema
-    
+
             {
                 "$schema": "http://json-schema.org/draft-04/schema#",
 
@@ -127,7 +127,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "identificationMethod": {
                         "type": "object",
                         "properties": {
-                            "identificationMethod": { "type": "string", "enum": [ "OazisPatientId", "NFC" ] },
+                            "identificationMethod": { "type": "string", "enum": [ "OazisPatientId", "NFC", "SCAN" ] },
                             "identificationKey": { "type": "string" }
                         },
                         "required": [ "identificationMethod", "identificationKey" ]
