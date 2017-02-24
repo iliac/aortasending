@@ -127,7 +127,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "identificationMethod": {
                         "type": "object",
                         "properties": {
-                            "identificationMethod": { "type": "string", "enum": [ "OazisPatientId", "NFC", "SCAN" ] },
+                            "identificationMethod": { "type": "string", "enum": [ "OazisPatientId", "NFC" ] },
                             "identificationKey": { "type": "string" }
                         },
                         "required": [ "identificationMethod", "identificationKey" ]
@@ -155,7 +155,7 @@ Process Requests are used as input to create one or multiple tasks.
                     "itemType": {
                         "type": "string",
                         "enum": [
-                            "Wheelchair"
+                            "Rolstoel", "Cart"
                         ]
                     },
                     "item": {
